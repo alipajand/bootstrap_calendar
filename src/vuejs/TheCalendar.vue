@@ -17,7 +17,8 @@
                                     v-on:click="removeDate()" v-if="calendar.text && inputShowIcons">
                     <i class="fa fa-times"></i>
                 </b-input-group-text>
-                <b-input-group-text slot="prepend" class="large p-2 border-0 pointer" v-if="calendar.text && inputAllowEmpty">
+                <b-input-group-text slot="prepend" class="large p-2 border-0 pointer"
+                                    v-if="calendar.text && inputAllowEmpty">
                     <i class="far fa-calendar-alt"></i>
                 </b-input-group-text>
             </b-input-group>
@@ -67,12 +68,12 @@
                                 v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
-                                        day.dateFormat < inputMinDate ? 'day-deactivate' : '',
-                                        day.dateFormat > inputMaxDate ? 'day-deactivate' : '',
+                                        minDate && day.dateFormat < minDate ? 'day-deactivate' : '',
+                                        maxDate && day.dateFormat > maxDate ? 'day-deactivate' : '',
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
-                                v-on:click="day.dateFormat > inputMinDate || day.dateFormat < inputMaxDate ? selectDay(day) : ''">
+                                v-on:click="(minDate && day.dateFormat > minDate) || (maxDate && day.dateFormat < maxDate) ? selectDay(day) : ''">
                                 {{day.title}}
                             </li>
                         </ul>
@@ -98,12 +99,12 @@
                     </b-col>
                 </b-row>
                 <b-row class="app-calendar-footer">
-                    <b-col sm="4" v-if="!inputMaxYear" class="mb-1">
+                    <b-col sm="4" v-if="!inputMaxYear && inputShowButtons" class="mb-1">
                         <b-button variant="light" class="p-2" block v-on:click="goToToday()">
                             امروز
                         </b-button>
                     </b-col>
-                    <b-col sm="4" class="p-md-0 mb-1" v-if="!inputMaxYear">
+                    <b-col sm="4" class="p-md-0 mb-1" v-if="!inputMaxYear && inputShowButtons">
                         <b-button variant="light" class="p-2" block v-on:click="goToCurrentMonth()">
                             ماه جــاری
                         </b-button>
@@ -182,6 +183,11 @@
                 type: Date,
                 required: false
             },
+            inputShowButtons: {
+                type: Boolean,
+                default: true,
+                required: false
+            },
             inputHorizontalView: {
                 type: Boolean,
                 default: false,
@@ -233,6 +239,8 @@
         data() {
             return {
                 date: new Date(),
+                minDate: null,
+                maxDate: null,
                 dayArray: [],
                 yearToShow: 2,
                 yearInfo: null,
@@ -279,16 +287,22 @@
             };
         },
         watch: {
-            'inputSelectedDate': function () {
+            'inputSelectedDate': function() {
                 this.fillData();
             },
-            'inputMaxYear': function () {
+            'inputMinDate': function() {
+                this.minDate = this.inputMinDate;
+            },
+            'inputMaxDate': function() {
+                this.maxDate = this.inputMaxDate;
+            },
+            'inputMaxYear': function() {
                 this.fillData();
             },
-            'inputMinYear': function () {
+            'inputMinYear': function() {
                 this.fillData();
             },
-            'inputPlaceholder': function () {
+            'inputPlaceholder': function() {
                 this.placeholder = this.inputPlaceholder;
             }
         },
