@@ -228,11 +228,11 @@
                 required: false
             },
             inputSelectedDate: {
-                type: String,
+                type: Date,
                 required: false
             },
             inputCalendarSelector: {
-                type: Object,
+                type: String,
                 required: false
             }
         },
