@@ -1,0 +1,148 @@
+<div class="app-calendar-row mb-3">
+    <!--calendar title-->
+    <label *ngIf="inputShowTitle && calendar.text && calendar.text !== ''" class="app-calendar-title">
+        {{inputPlaceholder}}
+    </label>
+
+    <div class="input-group">
+        <!--input-->
+        <input class="form-control app-calendar-input"
+               readonly
+               [name]="inputCalendarSelector"
+               type="text"
+               autocomplete="off"
+               (click)="toggleCalendar()"
+               [(ngModel)]="calendar.text"
+               [placeholder]="inputPlaceholder">
+        <div class="input-group-text bg-transparent border-0 pointer" (click)="removeDate()"
+             *ngIf="calendar.text && calendar.text !== ''">
+            <i class="fa fa-times"></i>
+        </div>
+    </div>
+
+
+    <!--calendar card-->
+    <div class="card app-calendar shadow d-none mb-5" [id]="inputCalendarSelector">
+        <div *ngIf="flags.showDates">
+            <div class="row app-calendar-header">
+                <div class="col-12">
+                    <button class="btn btn-link border-0 float-right btn-icon"
+                            type="button"
+                            (click)="goToPreviousMonth()">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                    <button class="app-calendar-header-month float-right text-center pointer d-inline btn btn-primary"
+                            type="button"
+                            (click)="showMonths(monthInfo.firstDayOfMonth)">
+                        {{monthInfo.title}}
+                    </button>
+                    <button class="app-calendar-header-month float-right text-center pointer d-inline btn btn-primary"
+                            type="button"
+                            (click)="showYears()">
+                        {{yearInfo}}
+                    </button>
+                    <button class="btn btn-link border-0 float-left btn-icon"
+                            type="button"
+                            (click)="goToNextMonth()">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row justify-content-center app-calendar-container">
+                <div class="col-12">
+                    <ul class="list-unstyled show-weekdays float-right p-0">
+                        <li *ngFor="let day of daysInPersian">
+                            {{day.title}}
+                        </li>
+                    </ul>
+                    <ul class="list-unstyled show-days float-right p-0">
+                        <li *ngFor="let day of dayArray"
+                            [ngClass]="[
+                                day.isHoliday ? 'day-isHoliday text-danger' : '',
+                                day.isToday ? 'day-isToday' : '',
+                                day.isGrey ? 'day-isGrey' : '',
+                                day.isSelected ? 'day-isSelected' : '']"
+                            (click)="selectDay(day)">
+                            {{day.title}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row app-calendar-time" *ngIf="inputShowTime">
+                <div class="col-6">
+                    <input type="text"
+                           autocomplete="off"
+                           class="text-center form-control"
+                           placeholder="دقیقه" min="0" max="60"
+                           tabindex="2" [(ngModel)]="calendar.minute" (change)="changeMinute()">
+                    <span class="text-body">:</span>
+                </div>
+                <div class="col-6">
+                    <input type="text"
+                           autocomplete="off"
+                           class="text-center form-control"
+                           placeholder="ساعت" min="0" max="24"
+                           tabindex="1" [(ngModel)]="calendar.hour" (change)="changeHour()">
+                </div>
+            </div>
+            <div class="row app-calendar-footer">
+                <div *ngIf="!inputMaxYear" class="col-sm-4 mb-1">
+                    <button class="p-2 btn btn-light btn-sm btn-block" (click)="goToToday()">
+                        امروز
+                    </button>
+                </div>
+                <div class="col-sm-4 p-md-0 mb-1" *ngIf="!inputMaxYear">
+                    <button class="p-2 btn btn-light btn-sm btn-block" (click)="goToCurrentMonth()">
+                        ماه جــاری
+                    </button>
+                </div>
+                <div [class]="inputMaxYear ? 'col-sm-12' : 'col-sm-4'">
+                    <button class="p-2 btn btn-light btn-sm btn-block" (click)="closeCalendar()"
+                            tabindex="3">
+                        بستن
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="flags.showMonths">
+            <div class="row app-calendar-header">
+                <div class="col-12">
+                    <span class="app-calendar-header-choose float-right text-center">
+                        یک ماه را انتخاب کنید
+                    </span>
+                </div>
+            </div>
+            <ul class="list-unstyled show-months p-0">
+                <li *ngFor="let month of monthsInPersian"
+                    (click)="selectMonth(month.firstDay)"
+                    [ngClass]="month.isSelected ? 'month-isSelected' : ''">
+                    {{month.title}}
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="flags.showYears">
+            <div class="row app-calendar-header">
+                <div class="col-12">
+                    <span class="app-calendar-header-choose float-right text-center">
+                        یک سال را انتخاب کنید
+                    </span>
+                </div>
+            </div>
+            <button class="btn btn-link app-calendar-show-less text-center float-right"
+                    (click)="showYearGoUp()">
+                <i class="fa fa-caret-up"></i>
+            </button>
+            <ul class="list-unstyled show-year p-0">
+                <li *ngFor="let year of yearsInPersian"
+                    (click)="selectYear(year.title)"
+                    [ngClass]="year.isSelected ? 'year-isSelected' : ''">
+                    {{year.title}}
+                </li>
+            </ul>
+            <button class="btn btn-link app-calendar-show-more text-center float-right"
+                    (click)="showYearGoDown()">
+                <i class="fa fa-caret-down"></i>
+            </button>
+        </div>
+    </div>
+</div>
