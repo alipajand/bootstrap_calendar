@@ -1,12 +1,8 @@
 {
     "name": "persian-calendar",
-    "version": "1.0.0",
-    "gitHooks": {
-        "pre-commit": "lint-staged"
-    },
-    "private": true,
+    "author": "ali.pajand@gmail.com",
+    "version": "1.0.0-beta.1",
     "dependencies": {
-        "@angular/core": "^7.0.1",
         "jquery": "^3.3.1"
     }
 }
