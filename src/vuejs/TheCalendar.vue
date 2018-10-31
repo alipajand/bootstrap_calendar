@@ -309,6 +309,9 @@
         mounted() {
             this.fillData();
 
+            this.minDate = this.inputMinDate;
+            this.maxDate = this.inputMaxDate;
+
             /**
              * to close calendar
              */
