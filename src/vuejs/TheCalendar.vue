@@ -99,17 +99,17 @@
                     </b-col>
                 </b-row>
                 <b-row class="app-calendar-footer">
-                    <b-col sm="4" v-if="!inputMaxYear && inputShowButtons" class="mb-1">
+                    <b-col sm="4" class="mb-1" v-if="inputShowFooterButtons">
                         <b-button variant="light" class="p-2" block v-on:click="goToToday()">
                             امروز
                         </b-button>
                     </b-col>
-                    <b-col sm="4" class="p-md-0 mb-1" v-if="!inputMaxYear && inputShowButtons">
+                    <b-col sm="4" class="mb-1" v-if="inputShowFooterButtons">
                         <b-button variant="light" class="p-2" block v-on:click="goToCurrentMonth()">
                             ماه جــاری
                         </b-button>
                     </b-col>
-                    <b-col v-bind:sm="inputMaxYear ? '12' : '4'">
+                    <b-col v-bind:sm="!inputShowFooterButtons ? '12' : '4'">
                         <b-button variant="light" class="p-2" block v-on:click="closeCalendar()"
                                   tabindex="3">
                             بستن
@@ -183,7 +183,7 @@
                 type: Date,
                 required: false
             },
-            inputShowButtons: {
+            inputShowFooterButtons: {
                 type: Boolean,
                 default: true,
                 required: false
