@@ -73,7 +73,7 @@
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
-                                v-on:click="(minDate && day.dateFormat > minDate) || (maxDate && day.dateFormat < maxDate) ? selectDay(day) : ''">
+                                v-on:click="(!minDate && !maxDate) || (minDate && day.dateFormat > minDate) || (maxDate && day.dateFormat < maxDate) ? selectDay(day) : ''">
                                 {{day.title}}
                             </li>
                         </ul>
