@@ -30,7 +30,7 @@ $calendar-zIndex: 2;
     position: absolute;
     width: $calendar-width;
     z-index: $calendar-zIndex;
-    top: calc(#{$input-height-inner} + #{$input-padding-x} + #{$grid-gutter-width});
+    top: calc(#{$input-height-inner} + 4px);
     @include border-radius(5px);
     @include animation(fadeIn .2s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards);
 
