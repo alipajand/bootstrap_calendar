@@ -68,8 +68,8 @@
                                 v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
-                                        minDate && day.dateFormat < minDate ? 'day-deactivate' : '',
-                                        maxDate && day.dateFormat > maxDate ? 'day-deactivate' : '',
+                                        minDate && day.dateFormat <= minDate ? 'day-deactivate' : '',
+                                        maxDate && day.dateFormat >= maxDate ? 'day-deactivate' : '',
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
@@ -246,7 +246,6 @@
                 yearInfo: null,
                 placeholder: '',
                 monthInfo: null,
-                selectedDate: null,
                 yearsInPersian: null,
                 calendarSelector: '',
                 monthsInPersian: [
@@ -287,22 +286,22 @@
             };
         },
         watch: {
-            'inputSelectedDate': function() {
+            'inputSelectedDate': function () {
                 this.fillData();
             },
-            'inputMinDate': function() {
+            'inputMinDate': function () {
                 this.minDate = this.inputMinDate;
             },
-            'inputMaxDate': function() {
+            'inputMaxDate': function () {
                 this.maxDate = this.inputMaxDate;
             },
-            'inputMaxYear': function() {
+            'inputMaxYear': function () {
                 this.fillData();
             },
-            'inputMinYear': function() {
+            'inputMinYear': function () {
                 this.fillData();
             },
-            'inputPlaceholder': function() {
+            'inputPlaceholder': function () {
                 this.placeholder = this.inputPlaceholder;
             }
         },
@@ -315,11 +314,12 @@
             /**
              * to close calendar
              */
-            $('body').on('click', (e) => {
-                let container = $('.app-calendar-input, .app-calendar');
-                if (!container.is(e.target) && container.has(e.target).length === 0) {
-                    this.closeCalendar();
-                }
+            $(window).click(() => {
+                this.closeCalendar();
+            });
+
+            $('.app-calendar-input, .app-calendar').click((event) => {
+                event.stopPropagation();
             });
         },
         methods: {
@@ -342,7 +342,6 @@
                  */
                 if (this.inputSelectedDate) {
                     this.date = new Date(this.inputSelectedDate);
-                    this.selectedDate = this.date;
                     this.calendar.text = this._convertToPersianDate(this.date, 'combo');
                 } else {
                     this.calendar.text = '';
@@ -356,8 +355,7 @@
                 this.$emit('changeDate', null);
             },
             toggleCalendar() {
-                const selector = '#' + this.calendarSelector;
-                if ($(selector).hasClass('d-none')) {
+                if ($('.app-calendar').hasClass('d-none')) {
                     this.closeCalendar();
                     $(selector).removeClass('d-none');
                     this._createCalendar();
@@ -456,7 +454,7 @@
                 }
 
                 /**
-                 * create column 1 (this month)
+                 * create column 2 (this month)
                  */
                 for (let row = persianWeekdayIndex; row <= 7; row++) {
                     const column = 1;
@@ -467,6 +465,10 @@
                     if (formula > 42 || counter > this.monthInfo.days) {
                         break;
                     }
+
+                    dataArray.title = counter;
+                    dataArray.dateFormat = new Date(dateFormat.setDate(firstDayOfMonth.getDate() + counter - 1));
+
                     if (row === 7) {
                         dataArray.isHoliday = true;
                     }
@@ -476,13 +478,11 @@
                     if (this._isCounterSelected(counter)) {
                         dataArray.isSelected = true;
                     }
-                    dataArray.title = counter;
-                    dataArray.dateFormat = new Date(dateFormat.setDate(firstDayOfMonth.getDate() + counter - 1));
                     counter++;
                 }
 
                 /**
-                 * create column 1 to 6 (this month and next month)
+                 * create column 2 to 7 (this month and next month)
                  */
                 for (let column = 2, nextMonthCounter = 1; column <= 6; column++) {
                     for (let row = 1; row <= 7; row++) {
@@ -505,6 +505,10 @@
                             nextMonthCounter++;
                             continue;
                         }
+
+                        dataArray.title = counter;
+                        dataArray.dateFormat = new Date(dateFormat.setDate(firstDayOfMonth.getDate() + counter - 1));
+
                         if (row === 7) {
                             dataArray.isHoliday = true;
                         }
@@ -514,8 +518,6 @@
                         if (this._isCounterSelected(counter)) {
                             dataArray.isSelected = true;
                         }
-                        dataArray.title = counter;
-                        dataArray.dateFormat = new Date(dateFormat.setDate(firstDayOfMonth.getDate() + counter - 1));
                         counter++;
                     }
                 }
@@ -526,7 +528,6 @@
                 this.calendar.text = this._convertToPersianDate(date, 'combo');
                 this.calendar.hour = this._getHour(date);
                 this.calendar.minute = this._getMinute(date);
-                this.selectedDate = new Date(date);
             },
             _checkLeapYear() {
                 const date = this.date;
@@ -537,13 +538,14 @@
                 }
             },
             _isCounterSelected(counter) {
-                if (!this.selectedDate) {
-                    this.selectedDate = new Date();
+                if (!this.inputSelectedDate) {
+                    return false;
                 }
+
+                const dateDay = this._getPersianDay(this.inputSelectedDate);
+                const dateMonth = this._getPersianMonth(this.inputSelectedDate);
+                const dateYear = this._getPersianYear(this.inputSelectedDate);
                 counter = counter.toString();
-                const dateDay = this._getPersianDay(this.selectedDate);
-                const dateMonth = this._getPersianMonth(this.selectedDate);
-                const dateYear = this._getPersianYear(this.selectedDate);
 
                 return (counter === dateDay && this.monthInfo.title === dateMonth && this.yearInfo === dateYear);
             },
@@ -878,8 +880,9 @@
                 if (!this.calendar.hour) {
                     this.calendar.hour = 0;
                 }
+                const selectedDate = this.inputSelectedDate;
                 const newHour = this._convertToEnglishDigit(this.calendar.hour);
-                const date = new Date(this.selectedDate.setHours(newHour));
+                const date = new Date(selectedDate.setHours(newHour));
                 this.monthInfo = this._fillMonthInfo(date);
                 this.$emit('changeDate', date);
                 this._updateModel(date);
@@ -890,8 +893,9 @@
                 if (!this.calendar.minute) {
                     this.calendar.minute = 0;
                 }
+                const selectedDate = this.inputSelectedDate;
                 const newMinute = this._convertToEnglishDigit(this.calendar.minute);
-                const date = new Date(this.selectedDate.setMinutes(newMinute));
+                const date = new Date(selectedDate.setMinutes(newMinute));
                 this.monthInfo = this._fillMonthInfo(date);
                 this.$emit('changeDate', date);
                 this._updateModel(date);

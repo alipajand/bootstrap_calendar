@@ -134,6 +134,7 @@ $calendar-zIndex: 2;
                     background-color: $primary;
                 }
                 &.day-deactivate {
+                    background-color: $white !important;
                     @include opacity(0.2);
                 }
                 &:nth-child(6) {
