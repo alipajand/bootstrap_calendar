@@ -1,5 +1,4 @@
-﻿$calendar-width: 300px;
-$calendar-zIndex: 2;
+$calendar-width: 300px;
 
 .app-calendar-row {
     position: relative;
@@ -29,7 +28,7 @@ $calendar-zIndex: 2;
     font-size: 13px;
     position: absolute;
     width: $calendar-width;
-    z-index: $calendar-zIndex;
+    z-index: $zindex-dropdown;
     top: calc(#{$input-height-inner} + 4px);
     @include border-radius(5px);
     @include animation(fadeIn .2s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards);
