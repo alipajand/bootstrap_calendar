@@ -38,6 +38,7 @@
                 <b-row class="app-calendar-header">
                     <b-col cols="12">
                         <b-button variant="link" class="border-0 float-right btn-icon"
+                                  v-bind:disabled="date <= inputMinYear"
                                   v-on:click="goToPreviousMonth()">
                             <i class="fa fa-arrow-right"></i>
                         </b-button>
@@ -50,6 +51,7 @@
                             {{yearInfo}}
                         </span>
                         <b-button variant="link" class="border-0 float-left btn-icon"
+                                  v-bind:disabled="date >= inputMaxYear"
                                   v-on:click="goToNextMonth()">
                             <i class="fa fa-arrow-left"></i>
                         </b-button>
@@ -68,12 +70,12 @@
                                 v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
-                                        minDate && day.dateFormat <= minDate ? 'day-deactivate' : '',
-                                        maxDate && day.dateFormat >= maxDate ? 'day-deactivate' : '',
+                                        inputMinYear && day.dateFormat <= inputMinYear ? 'day-deactivate' : '',
+                                        inputMaxYear && day.dateFormat >= inputMaxYear ? 'day-deactivate' : '',
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
-                                v-on:click="(!minDate && !maxDate) || (minDate && day.dateFormat > minDate) || (maxDate && day.dateFormat < maxDate) ? selectDay(day) : ''">
+                                v-on:click="(!inputMinYear && !inputMaxYear) || ((inputMinYear && day.dateFormat > inputMinYear) && (inputMaxYear && day.dateFormat < inputMaxYear)) ? selectDay(day) : ''">
                                 {{day.title}}
                             </li>
                         </ul>
@@ -168,11 +170,11 @@
     export default {
         props: {
             inputMaxYear: {
-                type: String,
+                type: Date,
                 required: false
             },
             inputMinYear: {
-                type: String,
+                type: Date,
                 required: false
             },
             inputMinDate: {
@@ -239,15 +241,13 @@
         data() {
             return {
                 date: new Date(),
-                minDate: null,
-                maxDate: null,
                 dayArray: [],
                 yearToShow: 2,
                 yearInfo: null,
                 placeholder: '',
                 monthInfo: null,
                 yearsInPersian: null,
-                calendarSelector: '',
+                calendarSelector: 'app-calendar',
                 monthsInPersian: [
                     { index: 0, title: 'فروردین', days: 31, isSelected: false, firstDay: '' },
                     { index: 1, title: 'اردیبهشت', days: 31, isSelected: false, firstDay: '' },
@@ -289,12 +289,6 @@
             'inputSelectedDate': function () {
                 this.fillData();
             },
-            'inputMinDate': function () {
-                this.minDate = this.inputMinDate;
-            },
-            'inputMaxDate': function () {
-                this.maxDate = this.inputMaxDate;
-            },
             'inputMaxYear': function () {
                 this.fillData();
             },
@@ -308,28 +302,33 @@
         mounted() {
             this.fillData();
 
-            this.minDate = this.inputMinDate;
-            this.maxDate = this.inputMaxDate;
-
             /**
              * to close calendar
              */
-            $(window).click(() => {
-                this.closeCalendar();
-            });
-
-            $('.app-calendar-input, .app-calendar').click((event) => {
-                event.stopPropagation();
+            $('body').on('click', e => {
+                let container = $('.app-calendar-input, .app-calendar');
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    this.closeCalendar();
+                }
             });
         },
         methods: {
             fillData() {
-                this.calendarSelector = this.inputCalendarSelector ? this.inputCalendarSelector : 'app-calendar';
                 this.placeholder = this.inputPlaceholder ? this.inputPlaceholder : 'تاریخ مورد نظر خود را انتخاب کنید';
 
+                /**
+                 * Define selector
+                 */
+                if (this.inputCalendarSelector) {
+                    this.calendarSelector = this.inputCalendarSelector;
+                }
+
+                /**
+                 * Calculate First Day Of Year
+                 */
                 if (this.inputMaxYear && !this.inputSelectedDate) {
                     const persianYear = parseInt(this._getPersianYear(new Date()));
-                    const persianMaxYear = parseInt(this.inputMaxYear);
+                    const persianMaxYear = parseInt(this._getPersianYear(this.inputMaxYear));
                     const abs = persianYear - persianMaxYear;
                     const newDate = new Date();
                     newDate.setFullYear(newDate.getFullYear() - abs);
@@ -347,6 +346,9 @@
                     this.calendar.text = '';
                 }
 
+                /**
+                 *
+                 */
                 this._createCalendar();
                 this._checkLeapYear();
             },
@@ -355,13 +357,14 @@
                 this.$emit('changeDate', null);
             },
             toggleCalendar() {
-                if ($('.app-calendar').hasClass('d-none')) {
+                const selector = '#' + this.calendarSelector;
+                if ($(selector).hasClass('d-none')) {
                     this.closeCalendar();
                     $(selector).removeClass('d-none');
                     this._createCalendar();
-                    return;
+                } else {
+                    this.closeCalendar();
                 }
-                this.closeCalendar();
             },
             closeCalendar() {
                 $('.app-calendar').addClass('d-none');
@@ -799,7 +802,7 @@
                  */
                 this.yearsInPersian = [];
                 for (let i = yearToShow - 4; i <= yearToShow + 4; i++) {
-                    if (parseInt(this.yearInfo) + i > this.inputMaxYear || parseInt(this.yearInfo) + i < this.inputMinYear) {
+                    if (parseInt(this.yearInfo) + i > this._getPersianYear(this.inputMaxYear) || parseInt(this.yearInfo) + i < this._getPersianYear(this.inputMinYear)) {
                         continue;
                     }
                     const generatedYear = parseInt(this.yearInfo) + i;
@@ -811,7 +814,7 @@
 
                 if (this.yearsInPersian.length === 0) {
                     for (let i = 0; i < 9; i++) {
-                        const generatedYear = parseInt(this.inputMaxYear) - i;
+                        const generatedYear = parseInt(this._getPersianYear(this.inputMaxYear)) - i;
                         this.yearsInPersian.push({
                             title: generatedYear,
                             isSelected: false
@@ -857,7 +860,7 @@
                 this.showMonths();
             },
             showYearGoUp() {
-                if (this.yearsInPersian[0].title <= this.inputMinYear) {
+                if (this.yearsInPersian[0].title <= this._getPersianYear(this.inputMinYear)) {
                     return;
                 }
 
@@ -866,7 +869,7 @@
             },
             showYearGoDown() {
                 const index = this.yearsInPersian.length - 1;
-                if (this.yearsInPersian[index].title >= this.inputMaxYear) {
+                if (this.yearsInPersian[index].title >= this._getPersianYear(this.inputMaxYear)) {
                     return;
                 }
                 this.yearToShow += 3;
