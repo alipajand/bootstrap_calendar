@@ -70,12 +70,12 @@
                                 v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
-                                        inputMinYear && day.dateFormat <= inputMinYear ? 'day-deactivate' : '',
-                                        inputMaxYear && day.dateFormat >= inputMaxYear ? 'day-deactivate' : '',
+                                        inputMinDate && day.dateFormat < inputMinDate ? 'day-deactivate' : '',
+                                        inputMaxDate && day.dateFormat > inputMaxDate ? 'day-deactivate' : '',
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
-                                v-on:click="(!inputMinYear && !inputMaxYear) || ((inputMinYear && day.dateFormat > inputMinYear) && (inputMaxYear && day.dateFormat < inputMaxYear)) ? selectDay(day) : ''">
+                                v-on:click="checkSelectability(day)">
                                 {{day.title}}
                             </li>
                         </ul>
@@ -381,6 +381,21 @@
                 this.$emit('changeDate', this.date);
                 this._updateModel(this.date);
                 this.closeCalendar();
+            },
+            checkSelectability(day) {
+                let condition = false;
+                if (!this.inputMinDate && !this.inputMaxDate) {
+                    condition = true;
+                } else if (!this.inputMinDate && this.inputMaxDate && day.dateFormat <= this.inputMaxDate) {
+                    condition = true;
+                } else if (!this.inputMaxDate && this.inputMinDate && day.dateFormat >= this.inputMinDate) {
+                    condition = true;
+                } else if (this.inputMinDate && this.inputMaxDate && day.dateFormat >= this.inputMinDate && day.dateFormat <= this.inputMaxDate) {
+                    condition = true;
+                }
+                if (condition) {
+                    this.selectDay(day);
+                }
             },
             goToToday() {
                 this.date = new Date();

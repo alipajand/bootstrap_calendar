@@ -133,6 +133,7 @@ $calendar-width: 300px;
                     background-color: $primary;
                 }
                 &.day-deactivate {
+                    color: $black !important;
                     background-color: $white !important;
                     @include opacity(0.2);
                 }
