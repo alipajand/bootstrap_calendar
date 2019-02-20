@@ -149,13 +149,14 @@
                     <i class="fa fa-caret-up"></i>
                 </b-button>
                 <ul class="list-unstyled show-year p-0">
-                    <li v-for="(year, index) in yearsInPersian"
-                        v-bind:key="index"
-                        v-if="year.title"
-                        v-on:click="selectYear(year.title)"
-                        v-bind:class="year.isSelected ? 'year-isSelected' : ''">
-                        {{year.title}}
-                    </li>
+                    <template v-for="(year, index) in yearsInPersian">
+                        <li v-if="year.title"
+                            v-bind:key="index"
+                            v-on:click="selectYear(year.title)"
+                            v-bind:class="year.isSelected ? 'year-isSelected' : ''">
+                            {{year.title}}
+                        </li>
+                    </template>
                 </ul>
                 <b-button variant="link" class="app-calendar-show-more text-center float-right"
                           v-on:click.prevent="showYearGoDown()">
@@ -238,7 +239,7 @@
                 required: false
             }
         },
-        data() {
+        data () {
             return {
                 date: new Date(),
                 dayArray: [],
@@ -299,7 +300,7 @@
                 this.placeholder = this.inputPlaceholder;
             }
         },
-        mounted() {
+        mounted () {
             this.fillData();
 
             /**
@@ -313,7 +314,7 @@
             });
         },
         methods: {
-            fillData() {
+            fillData () {
                 this.placeholder = this.inputPlaceholder ? this.inputPlaceholder : 'تاریخ مورد نظر خود را انتخاب کنید';
 
                 /**
@@ -352,11 +353,11 @@
                 this._createCalendar();
                 this._checkLeapYear();
             },
-            removeDate() {
+            removeDate () {
                 this.calendar.text = '';
                 this.$emit('changeDate', null);
             },
-            toggleCalendar() {
+            toggleCalendar () {
                 const selector = '#' + this.calendarSelector;
                 if ($(selector).hasClass('d-none')) {
                     this.closeCalendar();
@@ -366,13 +367,13 @@
                     this.closeCalendar();
                 }
             },
-            closeCalendar() {
+            closeCalendar () {
                 $('.app-calendar').addClass('d-none');
                 this.flags.showDates = true;
                 this.flags.showMonths = false;
                 this.flags.showYears = false;
             },
-            selectDay(day) {
+            selectDay (day) {
                 for (let i = 0; i < 42; i++) {
                     this.dayArray[i].isSelected = false;
                 }
@@ -382,7 +383,7 @@
                 this._updateModel(this.date);
                 this.closeCalendar();
             },
-            checkSelectability(day) {
+            checkSelectability (day) {
                 let condition = false;
                 if (!this.inputMinDate && !this.inputMaxDate) {
                     condition = true;
@@ -397,32 +398,32 @@
                     this.selectDay(day);
                 }
             },
-            goToToday() {
+            goToToday () {
                 this.date = new Date();
                 this._updateModel(this.date);
                 this._checkLeapYear();
                 this.closeCalendar();
             },
-            goToNextMonth() {
+            goToNextMonth () {
                 this._checkLeapYear();
                 this.date.setDate(this.date.getDate() + parseInt(this.monthInfo.days, 0));
 
                 this._createCalendar();
             },
-            goToCurrentMonth() {
+            goToCurrentMonth () {
                 this.date = new Date();
                 this._checkLeapYear();
                 this.date.setDate(this.date.getDate());
 
                 this._createCalendar();
             },
-            goToPreviousMonth() {
+            goToPreviousMonth () {
                 this._checkLeapYear();
                 this.date.setDate(this.date.getDate() - parseInt(this.monthInfo.previousMonthAmount, 0));
 
                 this._createCalendar();
             },
-            _createCalendar(date) {
+            _createCalendar (date) {
                 let firstDayOfMonth;
                 let persianWeekday;
                 let persianWeekdayIndex;
@@ -542,12 +543,12 @@
 
                 this.flags.initialCalendar = true;
             },
-            _updateModel(date) {
+            _updateModel (date) {
                 this.calendar.text = this._convertToPersianDate(date, 'combo');
                 this.calendar.hour = this._getHour(date);
                 this.calendar.minute = this._getMinute(date);
             },
-            _checkLeapYear() {
+            _checkLeapYear () {
                 const date = this.date;
                 if (this._isLeapYear(this._getPersianYear(date))) {
                     this.monthsInPersian[11].days = 30;
@@ -555,7 +556,7 @@
                     this.monthsInPersian[11].days = 29;
                 }
             },
-            _isCounterSelected(counter) {
+            _isCounterSelected (counter) {
                 if (!this.inputSelectedDate) {
                     return false;
                 }
@@ -567,7 +568,7 @@
 
                 return (counter === dateDay && this.monthInfo.title === dateMonth && this.yearInfo === dateYear);
             },
-            _isCounterTodayDate(counter) {
+            _isCounterTodayDate (counter) {
                 const dateDay = this._getPersianDay(new Date());
                 const dateMonth = this._getPersianMonth(new Date());
                 const dateYear = this._getPersianYear(new Date());
@@ -575,7 +576,7 @@
 
                 return (counter === dateDay && this.monthInfo.title === dateMonth && this.yearInfo === dateYear);
             },
-            _resetData() {
+            _resetData () {
                 this.dayArray = [];
                 for (let i = 0; i < 42; i++) {
                     this.dayArray.push({
@@ -588,13 +589,13 @@
                     });
                 }
             },
-            _getFirstDayOfMonth(date) {
+            _getFirstDayOfMonth (date) {
                 const firstDay = new Date(date);
                 const pastDays = parseInt(this._getPersianDay(date));
                 firstDay.setDate(firstDay.getDate() - pastDays + 1);
                 return firstDay;
             },
-            _getFirstDayOfYear(date) {
+            _getFirstDayOfYear (date) {
                 date = this._getFirstDayOfMonth(date);
                 const getMonth = this._getPersianMonth(new Date(date), '2-digit');
                 const getMonthIndex = parseInt(this._convertToEnglishDigit(getMonth)) - 1;
@@ -605,7 +606,7 @@
                 }
                 return new Date(date.setDate(date.getDate() - pastDays));
             },
-            _fillMonthInfo(date) {
+            _fillMonthInfo (date) {
                 let persianDate,
                     monthIndex,
                     daysAmount,
@@ -648,26 +649,26 @@
                     firstDayOfMonth: date
                 };
             },
-            _isLeapYear(year) {
+            _isLeapYear (year) {
                 return ((((((year - ((year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
             },
-            _getPersianDay(date, opt) {
+            _getPersianDay (date, opt) {
                 const options = { day: opt || 'numeric' };
                 return this._convertToEnglishDigit(date.toLocaleDateString('fa-persian', options));
             },
-            _getPersianWeekday(date, opt) {
+            _getPersianWeekday (date, opt) {
                 const options = { weekday: opt || 'long' };
                 return date.toLocaleDateString('fa-persian', options);
             },
-            _getPersianMonth(date, opt) {
+            _getPersianMonth (date, opt) {
                 const options = { month: opt || 'long' };
                 return date.toLocaleDateString('fa-persian', options);
             },
-            _getPersianYear(date, opt) {
+            _getPersianYear (date, opt) {
                 const options = { year: opt || 'numeric' };
                 return this._convertToEnglishDigit(date.toLocaleDateString('fa-persian', options));
             },
-            _getHour(date) {
+            _getHour (date) {
                 const options = { hour: '2-digit' };
                 const output = date.toLocaleString('fa-persian', options);
                 if (output.length <= 1) {
@@ -675,7 +676,7 @@
                 }
                 return output;
             },
-            _getMinute(date) {
+            _getMinute (date) {
                 const options = { minute: '2-digit' };
                 const output = date.toLocaleString('fa-persian', options);
                 if (output.length <= 1) {
@@ -683,7 +684,7 @@
                 }
                 return output;
             },
-            _convertToPersianDate(date, type) {
+            _convertToPersianDate (date, type) {
                 if (!date) {
                     return;
                 }
@@ -715,7 +716,7 @@
                 }
                 return `${year}/${month}/${day}`;
             },
-            _convertToEnglishDigit(string) {
+            _convertToEnglishDigit (string) {
                 return string.replace(/[\u0660-\u0669]/g, (c) => {
                     return c.charCodeAt(0) - 0x0660;
                 }).replace(/[\u06f0-\u06f9]/g, (c) => {
@@ -726,7 +727,7 @@
             /**
              * Selecting a month and a year together
              */
-            showMonths(firstDayOfMonth) {
+            showMonths (firstDayOfMonth) {
                 /**
                  * Month Index Selected
                  */
@@ -788,7 +789,7 @@
                 this.flags.showYears = false;
                 this.flags.showMonths = true;
             },
-            selectMonth(firstDayOfMonth) {
+            selectMonth (firstDayOfMonth) {
                 /**
                  * Update date and month
                  */
@@ -807,7 +808,7 @@
                  */
                 this._createCalendar();
             },
-            showYears(yearToShow) {
+            showYears (yearToShow) {
                 if (!yearToShow) {
                     yearToShow = 0;
                 }
@@ -856,7 +857,7 @@
                 this.flags.showMonths = false;
                 this.flags.showYears = true;
             },
-            selectYear(year) {
+            selectYear (year) {
                 /**
                  * show other panel
                  */
@@ -874,7 +875,7 @@
                  */
                 this.showMonths();
             },
-            showYearGoUp() {
+            showYearGoUp () {
                 if (this.yearsInPersian[0].title <= this._getPersianYear(this.inputMinYear)) {
                     return;
                 }
@@ -882,7 +883,7 @@
                 this.yearToShow -= 3;
                 this.showYears(this.yearToShow);
             },
-            showYearGoDown() {
+            showYearGoDown () {
                 const index = this.yearsInPersian.length - 1;
                 if (this.yearsInPersian[index].title >= this._getPersianYear(this.inputMaxYear)) {
                     return;
@@ -894,7 +895,7 @@
             /**
              * selecting an hour and minute
              */
-            changeHour() {
+            changeHour () {
                 if (!this.calendar.hour) {
                     this.calendar.hour = 0;
                 }
@@ -907,7 +908,7 @@
                 this._createCalendar(date);
                 this.date = date;
             },
-            changeMinute() {
+            changeMinute () {
                 if (!this.calendar.minute) {
                     this.calendar.minute = 0;
                 }

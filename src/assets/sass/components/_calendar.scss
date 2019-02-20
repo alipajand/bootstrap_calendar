@@ -1,4 +1,5 @@
 $calendar-width: 300px;
+$font-name-regular: 'iranYekan';
 
 .app-calendar-row {
     position: relative;
@@ -56,12 +57,14 @@ $calendar-width: 300px;
                 @include opacity(0.95)
             }
         }
+
         .app-calendar-header-month, .app-calendar-header-choose {
             color: white;
             line-height: 1;
             font-size: 15px;
             padding: 4px 6px 6px;
         }
+
         .app-calendar-header-month {
             margin: 0 1px;
             width: calc(50% - 32px - 2px);
@@ -70,16 +73,19 @@ $calendar-width: 300px;
                 @include opacity(0.9)
             }
         }
+
         .app-calendar-header-choose {
             width: 100%;
             margin-bottom: 10px;
             background-color: #333;
         }
     }
+
     .app-calendar-container {
         margin-top: 5px;
         margin-bottom: 5px;
     }
+
     .app-calendar-show-more, .app-calendar-show-less {
         background-color: #eee;
         border: 1px solid #ddd;
@@ -88,14 +94,18 @@ $calendar-width: 300px;
         color: #555;
         @include border-radius(0);
     }
+
     .app-calendar-show-more {
         margin: 4px -1px 0 0;
     }
+
     .app-calendar-show-less {
         margin: -4px -1px 4px 0;
     }
+
     ul {
         margin: 0;
+
         li {
             height: 30px;
             float: $right;
@@ -105,9 +115,11 @@ $calendar-width: 300px;
             margin: -1px -1px 0 0;
             @include user-select(none)
         }
+
         &.show-days {
             width: 77%;
             float: $right;
+
             li {
                 cursor: pointer;
                 width: calc(16.6666% + 1px);
@@ -116,36 +128,43 @@ $calendar-width: 300px;
                 &.day-isHoliday {
                     color: $danger;
                 }
+
                 &.day-isGrey {
                     &, &.day-isHoliday {
                         color: #aaa;
                         background-color: #f4f4f4;
                     }
                 }
+
                 &.day-isToday {
                     color: #333;
                     background-color: #fff2be;
                 }
+
                 &.day-isSelected {
                     font-size: 15px;
                     line-height: 1.1;
                     color: #fff !important;
                     background-color: $primary;
                 }
+
                 &.day-deactivate {
                     color: $black !important;
                     background-color: $white !important;
                     @include opacity(0.2);
                 }
+
                 &:nth-child(6) {
                     @include border-radius($border-radius 0 0 0)
                 }
+
                 &:nth-child(42) {
                     color: $danger;
                     @include border-radius(0 0 0 $border-radius)
                 }
             }
         }
+
         &.show-weekdays {
             width: 23%;
 
@@ -163,6 +182,7 @@ $calendar-width: 300px;
                 }
             }
         }
+
         &.show-months {
             width: 100%;
 
@@ -178,9 +198,11 @@ $calendar-width: 300px;
                 }
             }
         }
+
         &.show-year {
             width: 100%;
             float: $right;
+
             li {
                 width: calc(33.33333% + 1px);
                 cursor: pointer;
@@ -194,6 +216,7 @@ $calendar-width: 300px;
             }
         }
     }
+
     .app-calendar-time {
         margin-bottom: 5px;
         position: relative;
@@ -209,10 +232,12 @@ $calendar-width: 300px;
             position: absolute;
         }
     }
+
     .app-calendar-footer {
         .btn-link {
             margin: 0 4.5px;
             width: calc(33.3333% - 3px);
+
             &:first-child, &:last-child {
                 margin: 0;
             }

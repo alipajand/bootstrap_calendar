@@ -1,0 +1,13 @@
+﻿// add bootstrap
+@import "dependencies";
+@import '~bootstrap/scss/bootstrap';
+
+// add bootstrap theme
+@import 'themes/bootswatch';
+@import '~sass-bootstrap4rtl/assets/sass/rtl';
+
+// add font icon
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+
+@import 'styles/export';
