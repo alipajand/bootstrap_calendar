@@ -10,7 +10,7 @@
         "build": "node build/build.js",
         "test": "npm run unit && npm run e2e",
         "unit": "jest --config test/unit/jest.conf.js --coverage",
-        "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
+        "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.5.0",

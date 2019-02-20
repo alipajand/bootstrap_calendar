@@ -1,23 +1,11 @@
 $calendar-width: 300px;
-$font-name-regular: 'iranYekan';
+$font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
 
 .app-calendar-row {
-    position: relative;
-
     .app-calendar-input {
         &, &[readonly] {
             cursor: pointer;
-            font-size: $font-size-base;
-            font-family: $font-name-regular;
-            border: 1px solid $input-border-color;
-            @include user-select(none)
-        }
-    }
-
-    .float-right {
-        .app-calendar {
-            #{$right}: auto;
-            #{$left}: 0;
+            @include user-select(none);
         }
     }
 }
@@ -30,17 +18,12 @@ $font-name-regular: 'iranYekan';
     position: absolute;
     width: $calendar-width;
     z-index: $zindex-dropdown;
-    top: calc(#{$input-height-inner} + 4px);
     @include border-radius(5px);
     @include animation(fadeIn .2s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards);
 
     @media (max-width: map-get($grid-breakpoints, 'sm')) {
         width: 100%;
         max-width: $calendar-width;
-    }
-
-    [type=text].form-control {
-        font-family: $font-name-regular;
     }
 
     .app-calendar-header {
@@ -58,7 +41,8 @@ $font-name-regular: 'iranYekan';
             }
         }
 
-        .app-calendar-header-month, .app-calendar-header-choose {
+        .app-calendar-header-month,
+        .app-calendar-header-choose {
             color: white;
             line-height: 1;
             font-size: 15px;
@@ -81,18 +65,22 @@ $font-name-regular: 'iranYekan';
         }
     }
 
-    .app-calendar-container {
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-
-    .app-calendar-show-more, .app-calendar-show-less {
+    .app-calendar-show-more,
+    .app-calendar-show-less {
         background-color: #eee;
         border: 1px solid #ddd;
         width: calc(100% + 1px);
         padding: 0;
         color: #555;
         @include border-radius(0);
+    }
+
+    .app-calendar-time-separator {
+        left: 0;
+        right: 0;
+        top: 8px;
+        width: 1px;
+        margin: auto;
     }
 
     .app-calendar-show-more {
@@ -209,37 +197,10 @@ $font-name-regular: 'iranYekan';
 
                 &.year-isSelected {
                     color: #fff;
-                    font-size: 15px;
                     padding: 2px;
+                    font-size: 15px;
                     background-color: $primary;
                 }
-            }
-        }
-    }
-
-    .app-calendar-time {
-        margin-bottom: 5px;
-        position: relative;
-
-        [type=text].form-control {
-            height: 35px;
-        }
-
-        span {
-            top: 7px;
-            #{$left}: 0;
-            font-weight: bold;
-            position: absolute;
-        }
-    }
-
-    .app-calendar-footer {
-        .btn-link {
-            margin: 0 4.5px;
-            width: calc(33.3333% - 3px);
-
-            &:first-child, &:last-child {
-                margin: 0;
             }
         }
     }

@@ -204,7 +204,7 @@ input[type=number],
 [type=email].form-control,
 [type=tel].form-control,
 [contenteditable].form-control {
-    font-family: $font-name-regular-en, $font-name-regular, 'b Yekan', Tahoma;
+    font-family: $font-name-regular, 'b Yekan', Tahoma;
 
     &[disabled],
     &[readonly] {
@@ -339,6 +339,10 @@ input[type=number],
             border: none;
         }
     }
+}
+
+.ltr {
+    direction: ltr;
 }
 
 // Indicators ==================================================================
