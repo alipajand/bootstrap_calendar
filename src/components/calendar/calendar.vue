@@ -1,98 +1,99 @@
 <template>
-    <div>
-        <div class="app-calendar-row position-relative"
-             v-if="flags.initialCalendar">
-            <b-form-group class="input-with-icon"
-                          v-bind:label="placeholder"
-                          v-if="inputShowTitle">
-                <b-input-group>
-                    <b-form-input type="text"
-                                  readonly
-                                  autocomplete="off"
-                                  v-model="calendar.text"
-                                  class="app-calendar-input bg-white"
-                                  v-bind:horizontal="inputHorizontalView"
-                                  v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
-                                  v-on:click.native.prevent="toggleCalendar()">
-                    </b-form-input>
-                    <b-input-group-text slot="prepend">
-                        <i class="far fa-calendar-alt pointer app-calendar-icon"></i>
-                    </b-input-group-text>
-                    <b-input-group-text slot="prepend"
-                                        v-on:click="removeDate()"
-                                        v-if="calendar.text && inputShowIcons">
-                        <i class="fa fa-times pointer app-calendar-icon"></i>
-                    </b-input-group-text>
-                </b-input-group>
-            </b-form-group>
-            <b-form-input readonly
-                          type="text"
-                          autocomplete="off"
-                          v-model="calendar.text"
-                          class="app-calendar-input bg-white"
-                          v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
-                          v-on:click.native.prevent="toggleCalendar()"
-                          v-else>
-            </b-form-input>
+    <div class="app-calendar-row position-relative"
+         v-bind:name="inputCalendarSelector">
+        <b-form-group class="input-with-icon"
+                      v-bind:label="placeholder"
+                      v-if="inputShowTitle">
+            <b-input-group>
+                <b-form-input type="text"
+                              readonly
+                              autocomplete="off"
+                              v-model="calendar.text"
+                              class="app-calendar-input bg-white"
+                              v-bind:horizontal="inputHorizontalView"
+                              v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
+                              v-on:click.native.prevent="toggleCalendar()">
+                </b-form-input>
+                <b-input-group-text slot="prepend">
+                    <i class="far fa-calendar-alt pointer app-calendar-icon"></i>
+                </b-input-group-text>
+                <b-input-group-text slot="prepend"
+                                    v-on:click="removeDate()"
+                                    v-if="calendar.text && inputShowIcons">
+                    <i class="fa fa-times pointer app-calendar-icon"></i>
+                </b-input-group-text>
+            </b-input-group>
+        </b-form-group>
+        <b-form-input readonly
+                      type="text"
+                      autocomplete="off"
+                      v-model="calendar.text"
+                      class="app-calendar-input bg-white"
+                      v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
+                      v-on:click.native="toggleCalendar()"
+                      v-else>
+        </b-form-input>
 
-            <b-card no-body
-                    class="app-calendar shadow d-none mb-3"
-                    v-bind:id="inputCalendarSelector">
-                <div class="card-body p-2">
-                    <div v-if="flags.showDates">
-                        <b-row class="pt-1">
-                            <b-col cols="2">
-                                <b-button block
-                                          size="lg"
-                                          variant="light"
-                                          class="bg-gray border-0 py-1 px-0 shadow-none text-white"
-                                          v-bind:disabled="date <= inputMinYear"
-                                          v-on:click="goToPreviousMonth()">
-                                    <i class="fa fa-arrow-right pr-2 ml-1 app-calendar-icon"></i>
-                                </b-button>
-                            </b-col>
-                            <b-col cols="4"
-                                   class="p-0">
-                                <b-button block
-                                          size="lg"
-                                          variant="primary"
-                                          class="rounded-0 border-0 py-1 shadow-none"
-                                          v-on:click="showMonths(monthInfo.firstDayOfMonth)">
-                                    {{monthInfo.title}}
-                                </b-button>
-                            </b-col>
-                            <b-col cols="4"
-                                   class="p-0">
-                                <b-button block
-                                          size="lg"
-                                          variant="primary"
-                                          class="rounded-0 border-0 py-1 shadow-none"
-                                          v-on:click="showYears()">
-                                    {{yearInfo}}
-                                </b-button>
-                            </b-col>
-                            <b-col cols="2">
-                                <b-button block
-                                          size="lg"
-                                          variant="light"
-                                          class="bg-gray border-0 py-1 px-0 shadow-none text-white"
-                                          v-bind:disabled="date >= inputMaxYear"
-                                          v-on:click="goToNextMonth()">
-                                    <i class="fa fa-arrow-left pl-2 mr-1 app-calendar-icon"></i>
-                                </b-button>
-                            </b-col>
-                        </b-row>
-                        <b-row class="justify-content-center my-2">
-                            <b-col cols="12">
-                                <ul class="list-unstyled show-weekdays float-right p-0">
-                                    <li v-for="(day, index) in daysInPersian" v-bind:key="index">
-                                        {{day.title}}
-                                    </li>
-                                </ul>
-                                <ul class="list-unstyled show-days float-right p-0">
-                                    <li v-for="(day, index) in dayArray"
-                                        v-bind:key="index"
-                                        v-bind:class="[
+        <b-card no-body
+                class="app-calendar shadow mb-3"
+                v-bind:id="inputCalendarSelector"
+                v-bind:ref="inputCalendarSelector"
+                v-if="flags.showCalendar && flags.initialCalendar">
+            <div class="card-body p-2">
+                <div v-show="flags.showDates">
+                    <b-row class="pt-1">
+                        <b-col cols="2">
+                            <b-button block
+                                      size="lg"
+                                      variant="light"
+                                      class="bg-gray border-0 py-1 px-0 shadow-none text-white"
+                                      v-bind:disabled="date <= inputMinYear"
+                                      v-on:click="goToPreviousMonth()">
+                                <i class="fa fa-arrow-right pr-2 ml-1 app-calendar-icon"></i>
+                            </b-button>
+                        </b-col>
+                        <b-col cols="4"
+                               class="p-0">
+                            <b-button block
+                                      size="lg"
+                                      variant="primary"
+                                      class="rounded-0 border-0 py-1 shadow-none"
+                                      v-on:click="showMonths(monthInfo.firstDayOfMonth)">
+                                {{monthInfo.title}}
+                            </b-button>
+                        </b-col>
+                        <b-col cols="4"
+                               class="p-0">
+                            <b-button block
+                                      size="lg"
+                                      variant="primary"
+                                      class="rounded-0 border-0 py-1 shadow-none"
+                                      v-on:click="showYears()">
+                                {{yearInfo}}
+                            </b-button>
+                        </b-col>
+                        <b-col cols="2">
+                            <b-button block
+                                      size="lg"
+                                      variant="light"
+                                      class="bg-gray border-0 py-1 px-0 shadow-none text-white"
+                                      v-bind:disabled="date >= inputMaxYear"
+                                      v-on:click="goToNextMonth()">
+                                <i class="fa fa-arrow-left pl-2 mr-1 app-calendar-icon"></i>
+                            </b-button>
+                        </b-col>
+                    </b-row>
+                    <b-row class="justify-content-center my-2">
+                        <b-col cols="12">
+                            <ul class="list-unstyled show-weekdays float-right p-0">
+                                <li v-for="(day, index) in daysInPersian" v-bind:key="index">
+                                    {{day.title}}
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled show-days float-right p-0">
+                                <li v-for="(day, index) in dayArray"
+                                    v-bind:key="index"
+                                    v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
                                         inputMinDate && day.dateFormat < inputMinDate ? 'day-deactivate' : '',
@@ -100,149 +101,148 @@
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
-                                        v-on:click="checkSelectable(day)">
-                                        {{day.title}}
-                                    </li>
-                                </ul>
-                            </b-col>
-                        </b-row>
-                        <b-row class="mb-2 position-relative"
-                               v-if="inputShowTime">
-                            <b-col cols="6">
-                                <b-form-input min="0"
-                                              max="60"
-                                              type="text"
-                                              tabindex="2"
-                                              class="text-center"
-                                              autocomplete="off"
-                                              placeholder="دقیقه"
-                                              v-model="calendar.minute"
-                                              v-on:change="changeMinute()">
-                                </b-form-input>
-                            </b-col>
-                            <b-col cols="1"
-                                   class="position-absolute app-calendar-time-separator">
-                                :
-                            </b-col>
-                            <b-col cols="6">
-                                <b-form-input min="0"
-                                              max="24"
-                                              type="text"
-                                              tabindex="1"
-                                              class="text-center"
-                                              autocomplete="off"
-                                              placeholder="ساعت"
-                                              v-model="calendar.hour"
-                                              v-on:change="changeHour()">
-                                </b-form-input>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <template v-if="inputShowFooterButtons">
-                                <b-col>
-                                    <b-button block
-                                              variant="light"
-                                              v-on:click="goToToday()">
-                                        امروز
-                                    </b-button>
-                                </b-col>
-                                <b-col class="p-0">
-                                    <b-button block
-                                              variant="light"
-                                              v-on:click="goToCurrentMonth()">
-                                        ماه جــاری
-                                    </b-button>
-                                </b-col>
-                            </template>
+                                    v-on:click="checkSelectable(day)">
+                                    {{day.title}}
+                                </li>
+                            </ul>
+                        </b-col>
+                    </b-row>
+                    <b-row class="mb-2 position-relative"
+                           v-if="inputShowTime">
+                        <b-col cols="6">
+                            <b-form-input min="0"
+                                          max="60"
+                                          type="text"
+                                          tabindex="2"
+                                          class="text-center"
+                                          autocomplete="off"
+                                          placeholder="دقیقه"
+                                          v-model="calendar.minute"
+                                          v-on:change="changeMinute()">
+                            </b-form-input>
+                        </b-col>
+                        <b-col cols="1"
+                               class="position-absolute app-calendar-time-separator">
+                            :
+                        </b-col>
+                        <b-col cols="6">
+                            <b-form-input min="0"
+                                          max="24"
+                                          type="text"
+                                          tabindex="1"
+                                          class="text-center"
+                                          autocomplete="off"
+                                          placeholder="ساعت"
+                                          v-model="calendar.hour"
+                                          v-on:change="changeHour()">
+                            </b-form-input>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <template v-if="inputShowFooterButtons">
                             <b-col>
-                                <b-button block
-                                          variant="light"
-                                          v-on:click="closeCalendar()"
-                                          tabindex="3">
-                                    بستن
-                                </b-button>
-                            </b-col>
-                        </b-row>
-                    </div>
-                    <div v-if="flags.showMonths">
-                        <b-row>
-                            <b-col cols="12">
-                                <div class="bg-gray text-white rounded text-center mb-2 py-2">
-                                    یک ماه را انتخاب کنید
-                                </div>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <ul class="list-unstyled mx-0 p-0 mb-2 float-right show-months">
-                                    <li v-for="(month, index) in monthsInPersian"
-                                        v-bind:key="index"
-                                        v-on:click="selectMonth(month.firstDay)"
-                                        v-bind:class="month.isSelected ? 'month-isSelected' : ''">
-                                        {{month.title}}
-                                    </li>
-                                </ul>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col class="p-0">
                                 <b-button block
                                           variant="light"
                                           v-on:click="goToToday()">
                                     امروز
                                 </b-button>
                             </b-col>
-                        </b-row>
-                    </div>
-                    <div v-if="flags.showYears">
-                        <b-row>
-                            <b-col cols="12">
-                                <div class="bg-gray text-white rounded text-center mb-2 py-2">
-                                    یک سال را انتخاب کنید
-                                </div>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <ul class="list-unstyled mx-0 mb-2 p-0 float-right show-year">
-                                    <template v-for="(year, index) in yearsInPersian">
-                                        <li v-if="year.title"
-                                            v-bind:key="index"
-                                            v-on:click="selectYear(year.title)"
-                                            v-bind:class="year.isSelected ? 'year-isSelected' : ''">
-                                            {{year.title}}
-                                        </li>
-                                    </template>
-                                </ul>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <b-button block
-                                          variant="light"
-                                          v-on:click="showYearGoUp()">
-                                    <i class="fas fa-angle-up app-calendar-icon"></i>
-                                </b-button>
-                            </b-col>
                             <b-col class="p-0">
                                 <b-button block
                                           variant="light"
-                                          v-on:click="goToToday()">
-                                    امروز
+                                          v-on:click="goToCurrentMonth()">
+                                    ماه جــاری
                                 </b-button>
                             </b-col>
-                            <b-col>
-                                <b-button block
-                                          variant="light"
-                                          v-on:click="showYearGoDown()">
-                                    <i class="fas fa-angle-down app-calendar-icon"></i>
-                                </b-button>
-                            </b-col>
-                        </b-row>
-                    </div>
+                        </template>
+                        <b-col>
+                            <b-button block
+                                      variant="light"
+                                      v-on:click="closeCalendar()"
+                                      tabindex="3">
+                                بستن
+                            </b-button>
+                        </b-col>
+                    </b-row>
                 </div>
-            </b-card>
-        </div>
+                <div v-show="flags.showMonths">
+                    <b-row>
+                        <b-col cols="12">
+                            <div class="bg-gray text-white rounded text-center mb-2 py-2">
+                                یک ماه را انتخاب کنید
+                            </div>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col>
+                            <ul class="list-unstyled mx-0 p-0 mb-2 float-right show-months">
+                                <li v-for="(month, index) in monthsInPersian"
+                                    v-bind:key="index"
+                                    v-on:click="selectMonth(month.firstDay)"
+                                    v-bind:class="month.isSelected ? 'month-isSelected' : ''">
+                                    {{month.title}}
+                                </li>
+                            </ul>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col class="p-0">
+                            <b-button block
+                                      variant="light"
+                                      v-on:click="goToToday()">
+                                امروز
+                            </b-button>
+                        </b-col>
+                    </b-row>
+                </div>
+                <div v-show="flags.showYears">
+                    <b-row>
+                        <b-col cols="12">
+                            <div class="bg-gray text-white rounded text-center mb-2 py-2">
+                                یک سال را انتخاب کنید
+                            </div>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col>
+                            <ul class="list-unstyled mx-0 mb-2 p-0 float-right show-year">
+                                <template v-for="(year, index) in yearsInPersian">
+                                    <li v-if="year.title"
+                                        v-bind:key="index"
+                                        v-on:click="selectYear(year.title)"
+                                        v-bind:class="year.isSelected ? 'year-isSelected' : ''">
+                                        {{year.title}}
+                                    </li>
+                                </template>
+                            </ul>
+                        </b-col>
+                    </b-row>
+                    <b-row>
+                        <b-col>
+                            <b-button block
+                                      variant="light"
+                                      v-on:click="showYearGoUp()">
+                                <i class="fas fa-angle-up app-calendar-icon"></i>
+                            </b-button>
+                        </b-col>
+                        <b-col class="p-0">
+                            <b-button block
+                                      variant="light"
+                                      v-on:click="goToToday()">
+                                امروز
+                            </b-button>
+                        </b-col>
+                        <b-col>
+                            <b-button block
+                                      variant="light"
+                                      v-on:click="showYearGoDown()">
+                                <i class="fas fa-angle-down app-calendar-icon"></i>
+                            </b-button>
+                        </b-col>
+                    </b-row>
+                </div>
+            </div>
+        </b-card>
     </div>
 </template>
 
@@ -368,10 +368,11 @@
                     minute: 0
                 },
                 flags: {
-                    initialCalendar: false,
                     showDates: true,
+                    showYears: false,
                     showMonths: false,
-                    showYears: false
+                    initialCalendar: false,
+                    showCalendar: false
                 }
             };
         },
@@ -393,14 +394,38 @@
              * toggle calendar
              */
             $(window, 'body').on('click', e => {
-                const selector = `#${this.inputCalendarSelector}`;
-                if ($(e.target).parents(selector)) {
-                    return;
-                }
-                this.closeCalendar();
+                this.hideCalendar(e);
             });
         },
         methods: {
+            /**
+             * toggle class
+             */
+            hideCalendar(e) {
+                const elements = e.target;
+                const reference = this.$refs[this.inputCalendarSelector];
+
+                if (reference && this.flags.showCalendar) {
+                    if (!(reference.contains(elements))) {
+                        // this.flags.showCalendar = false;
+                        console.log('should close calendar');
+                    }
+                }
+            },
+            toggleCalendar() {
+                this.flags.showCalendar = !this.flags.showCalendar;
+            },
+
+            /**
+             * close all 'app-calendar' panels
+             */
+            closeCalendar() {
+                $('.app-calendar').addClass('d-none');
+                this.flags.showDates = true;
+                this.flags.showMonths = false;
+                this.flags.showYears = false;
+            },
+
             /**
              *
              */
@@ -446,30 +471,6 @@
             /**
              *
              */
-            toggleCalendar() {
-                const selector = `#${this.inputCalendarSelector}`;
-                if ($(selector).hasClass('d-none')) {
-                    this.closeCalendar();
-                    $(selector).removeClass('d-none');
-                    this.createCalendar();
-                } else {
-                    this.closeCalendar();
-                }
-            },
-
-            /**
-             *
-             */
-            closeCalendar() {
-                $('.app-calendar').addClass('d-none');
-                this.flags.showDates = true;
-                this.flags.showMonths = false;
-                this.flags.showYears = false;
-            },
-
-            /**
-             *
-             */
             selectDay(day) {
                 /**
                  * reset all selected highlights
@@ -483,6 +484,9 @@
                  */
                 day.isSelected = true;
 
+                /**
+                 * update date
+                 */
                 const date = new Date(day.dateFormat);
                 this.date = date;
 
