@@ -15,12 +15,12 @@
                                   v-on:click.native.prevent="toggleCalendar($event)">
                     </b-form-input>
                     <b-input-group-text slot="prepend">
-                        <i class="far fa-calendar-alt pointer"></i>
+                        <i class="far fa-calendar-alt pointer app-calendar-icon"></i>
                     </b-input-group-text>
                     <b-input-group-text slot="prepend"
                                         v-on:click="removeDate()"
                                         v-if="calendar.text && inputShowIcons">
-                        <i class="fa fa-times pointer"></i>
+                        <i class="fa fa-times pointer app-calendar-icon"></i>
                     </b-input-group-text>
                 </b-input-group>
             </b-form-group>
@@ -32,42 +32,61 @@
                           v-on:click.native.prevent="toggleCalendar($event)"
                           v-else>
             </b-form-input>
-            <b-card no-body class="app-calendar shadow d-none mb-3"
+
+            <b-card no-body
+                    class="app-calendar shadow d-none mb-3"
                     v-bind:id="calendarSelector">
-                <div v-if="flags.showDates">
-                    <b-row class="app-calendar-header">
-                        <b-col cols="12">
-                            <b-button variant="link" class="border-0 float-right btn-icon"
-                                      v-bind:disabled="date <= inputMinYear"
-                                      v-on:click="goToPreviousMonth()">
-                                <i class="fa fa-arrow-right"></i>
-                            </b-button>
-                            <span class="app-calendar-header-month float-right text-center pointer bg-primary"
-                                  v-on:click="showMonths(monthInfo.firstDayOfMonth)">
-                            {{monthInfo.title}}
-                        </span>
-                            <span class="app-calendar-header-month float-right text-center pointer bg-primary"
-                                  v-on:click="showYears()">
-                            {{yearInfo}}
-                        </span>
-                            <b-button variant="link" class="border-0 float-left btn-icon"
-                                      v-bind:disabled="date >= inputMaxYear"
-                                      v-on:click="goToNextMonth()">
-                                <i class="fa fa-arrow-left"></i>
-                            </b-button>
-                        </b-col>
-                    </b-row>
-                    <b-row class="justify-content-center my-1">
-                        <b-col cols="12">
-                            <ul class="list-unstyled show-weekdays float-right p-0">
-                                <li v-for="(day, index) in daysInPersian" v-bind:key="index">
-                                    {{day.title}}
-                                </li>
-                            </ul>
-                            <ul class="list-unstyled show-days float-right p-0">
-                                <li v-for="(day, index) in dayArray"
-                                    v-bind:key="index"
-                                    v-bind:class="[
+                <div class="card-body p-2">
+                    <div v-if="flags.showDates">
+                        <b-row class="pt-1">
+                            <b-col cols="2">
+                                <b-button block
+                                          variant="light"
+                                          class="bg-gray rounded-0 text-white border-0"
+                                          v-bind:disabled="date <= inputMinYear"
+                                          v-on:click="goToPreviousMonth()">
+                                    <i class="fa fa-arrow-right app-calendar-icon"></i>
+                                </b-button>
+                            </b-col>
+                            <b-col cols="4"
+                                   class="p-0">
+                                <b-button block
+                                          variant="primary"
+                                          class="rounded-0 border-0 shadow-none"
+                                          v-on:click="showMonths(monthInfo.firstDayOfMonth)">
+                                    {{monthInfo.title}}
+                                </b-button>
+                            </b-col>
+                            <b-col cols="4"
+                                   class="p-0">
+                                <b-button block
+                                          variant="primary"
+                                          class="rounded-0 border-0 shadow-none"
+                                          v-on:click="showYears()">
+                                    {{yearInfo}}
+                                </b-button>
+                            </b-col>
+                            <b-col cols="2">
+                                <b-button block
+                                          variant="light"
+                                          class="bg-gray rounded-0 text-white border-0"
+                                          v-bind:disabled="date >= inputMaxYear"
+                                          v-on:click="goToNextMonth()">
+                                    <i class="fa fa-arrow-left app-calendar-icon"></i>
+                                </b-button>
+                            </b-col>
+                        </b-row>
+                        <b-row class="justify-content-center my-2">
+                            <b-col cols="12">
+                                <ul class="list-unstyled show-weekdays float-right p-0">
+                                    <li v-for="(day, index) in daysInPersian" v-bind:key="index">
+                                        {{day.title}}
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled show-days float-right p-0">
+                                    <li v-for="(day, index) in dayArray"
+                                        v-bind:key="index"
+                                        v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
                                         inputMinDate && day.dateFormat < inputMinDate ? 'day-deactivate' : '',
@@ -75,107 +94,146 @@
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
-                                    v-on:click="checkSelectability(day)">
-                                    {{day.title}}
-                                </li>
-                            </ul>
-                        </b-col>
-                    </b-row>
-                    <b-row class="mb-1 position-relative"
-                           v-if="inputShowTime">
-                        <b-col cols="6">
-                            <b-form-input min="0"
-                                          max="60"
-                                          type="text"
-                                          tabindex="2"
-                                          class="text-center"
-                                          autocomplete="off"
-                                          placeholder="دقیقه"
-                                          v-model="calendar.minute"
-                                          v-on:change="changeMinute()">
-                            </b-form-input>
-                        </b-col>
-                        <b-col cols="1"
-                               class="position-absolute app-calendar-time-separator">
-                            :
-                        </b-col>
-                        <b-col cols="6">
-                            <b-form-input min="0"
-                                          max="24"
-                                          type="text"
-                                          tabindex="1"
-                                          class="text-center"
-                                          autocomplete="off"
-                                          placeholder="ساعت"
-                                          v-model="calendar.hour"
-                                          v-on:change="changeHour()">
-                            </b-form-input>
-                        </b-col>
-                    </b-row>
-                    <b-row>
-                        <template v-if="inputShowFooterButtons">
+                                        v-on:click="checkSelectabile(day)">
+                                        {{day.title}}
+                                    </li>
+                                </ul>
+                            </b-col>
+                        </b-row>
+                        <b-row class="mb-2 position-relative"
+                               v-if="inputShowTime">
+                            <b-col cols="6">
+                                <b-form-input min="0"
+                                              max="60"
+                                              type="text"
+                                              tabindex="2"
+                                              class="text-center"
+                                              autocomplete="off"
+                                              placeholder="دقیقه"
+                                              v-model="calendar.minute"
+                                              v-on:change="changeMinute()">
+                                </b-form-input>
+                            </b-col>
+                            <b-col cols="1"
+                                   class="position-absolute app-calendar-time-separator">
+                                :
+                            </b-col>
+                            <b-col cols="6">
+                                <b-form-input min="0"
+                                              max="24"
+                                              type="text"
+                                              tabindex="1"
+                                              class="text-center"
+                                              autocomplete="off"
+                                              placeholder="ساعت"
+                                              v-model="calendar.hour"
+                                              v-on:change="changeHour()">
+                                </b-form-input>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <template v-if="inputShowFooterButtons">
+                                <b-col>
+                                    <b-button block
+                                              variant="light"
+                                              v-on:click="goToToday()">
+                                        امروز
+                                    </b-button>
+                                </b-col>
+                                <b-col class="p-0">
+                                    <b-button block
+                                              variant="light"
+                                              v-on:click="goToCurrentMonth()">
+                                        ماه جــاری
+                                    </b-button>
+                                </b-col>
+                            </template>
                             <b-col>
-                                <b-button variant="light" class="p-2" block v-on:click="goToToday()">
-                                    امروز
+                                <b-button block
+                                          variant="light"
+                                          v-on:click="closeCalendar()"
+                                          tabindex="3">
+                                    بستن
+                                </b-button>
+                            </b-col>
+                        </b-row>
+                    </div>
+                    <div v-if="flags.showMonths">
+                        <b-row>
+                            <b-col cols="12">
+                                <div class="bg-gray text-white rounded text-center mb-2 py-2">
+                                    یک ماه را انتخاب کنید
+                                </div>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <ul class="list-unstyled mx-0 p-0 mb-2 float-right show-months">
+                                    <li v-for="(month, index) in monthsInPersian"
+                                        v-bind:key="index"
+                                        v-on:click="selectMonth(month.firstDay)"
+                                        v-bind:class="month.isSelected ? 'month-isSelected' : ''">
+                                        {{month.title}}
+                                    </li>
+                                </ul>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col class="p-0">
+                                <b-button block
+                                          variant="light"
+                                          v-on:click="showThisMonth()">
+                                    این ماه
+                                </b-button>
+                            </b-col>
+                        </b-row>
+                    </div>
+                    <div v-if="flags.showYears">
+                        <b-row>
+                            <b-col cols="12">
+                                <div class="bg-gray text-white rounded text-center mb-2 py-2">
+                                    یک سال را انتخاب کنید
+                                </div>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <ul class="list-unstyled mx-0 mb-2 p-0 float-right show-year">
+                                    <template v-for="(year, index) in yearsInPersian">
+                                        <li v-if="year.title"
+                                            v-bind:key="index"
+                                            v-on:click="selectYear(year.title)"
+                                            v-bind:class="year.isSelected ? 'year-isSelected' : ''">
+                                            {{year.title}}
+                                        </li>
+                                    </template>
+                                </ul>
+                            </b-col>
+                        </b-row>
+                        <b-row>
+                            <b-col>
+                                <b-button block
+                                          variant="light"
+                                          v-on:click="showYearGoUp()">
+                                    <i class="fas fa-angle-up app-calendar-icon"></i>
                                 </b-button>
                             </b-col>
                             <b-col class="p-0">
-                                <b-button variant="light" class="p-2" block v-on:click="goToCurrentMonth()">
-                                    ماه جــاری
+                                <b-button block
+                                          variant="light"
+                                          v-on:click="showThisYear()">
+                                    امسال
                                 </b-button>
                             </b-col>
-                        </template>
-                        <b-col>
-                            <b-button variant="light" class="p-2" block v-on:click="closeCalendar()"
-                                      tabindex="3">
-                                بستن
-                            </b-button>
-                        </b-col>
-                    </b-row>
-                </div>
-                <div v-if="flags.showMonths">
-                    <b-row class="app-calendar-header">
-                        <b-col cols="12">
-                            <div class="app-calendar-header-choose float-right text-center">
-                                یک ماه را انتخاب کنید
-                            </div>
-                        </b-col>
-                    </b-row>
-                    <ul class="list-unstyled show-months p-0">
-                        <li v-for="(month, index) in monthsInPersian"
-                            v-bind:key="index"
-                            v-on:click="selectMonth(month.firstDay)"
-                            v-bind:class="month.isSelected ? 'month-isSelected' : ''">
-                            {{month.title}}
-                        </li>
-                    </ul>
-                </div>
-                <div v-if="flags.showYears">
-                    <b-row class="app-calendar-header">
-                        <b-col cols="12">
-                            <div class="app-calendar-header-choose float-right text-center">
-                                یک سال را انتخاب کنید
-                            </div>
-                        </b-col>
-                    </b-row>
-                    <b-button variant="link" class="app-calendar-show-less text-center float-right"
-                              v-on:click.prevent="showYearGoUp()">
-                        <i class="fa fa-caret-up"></i>
-                    </b-button>
-                    <ul class="list-unstyled show-year p-0">
-                        <template v-for="(year, index) in yearsInPersian">
-                            <li v-if="year.title"
-                                v-bind:key="index"
-                                v-on:click="selectYear(year.title)"
-                                v-bind:class="year.isSelected ? 'year-isSelected' : ''">
-                                {{year.title}}
-                            </li>
-                        </template>
-                    </ul>
-                    <b-button variant="link" class="app-calendar-show-more text-center float-right"
-                              v-on:click.prevent="showYearGoDown()">
-                        <i class="fa fa-caret-down"></i>
-                    </b-button>
+                            <b-col>
+                                <b-button block
+                                          variant="light"
+                                          v-on:click="showYearGoDown()">
+                                    <i class="fas fa-angle-down app-calendar-icon"></i>
+                                </b-button>
+                            </b-col>
+                        </b-row>
+                    </div>
                 </div>
             </b-card>
         </div>
@@ -258,7 +316,7 @@
             return {
                 date: new Date(),
                 dayArray: [],
-                yearToShow: 2,
+                yearToShow: 0,
                 yearInfo: null,
                 placeholder: '',
                 monthInfo: null,
@@ -321,14 +379,17 @@
             /**
              * to close calendar
              */
-            $('body').on('click', e => {
-                let container = $('.app-calendar-input, .app-calendar');
-                if (!container.is(e.target) && container.has(e.target).length === 0) {
-                    this.closeCalendar();
-                }
-            });
+            // $('body').on('click', e => {
+            //     let container = $('.app-calendar-input, .app-calendar');
+            //     if (!container.is(e.target) && container.has(e.target).length === 0) {
+            //         this.closeCalendar();
+            //     }
+            // });
         },
         methods: {
+            /**
+             *
+             */
             fillData () {
                 this.placeholder = this.inputPlaceholder ? this.inputPlaceholder : 'تاریخ مورد نظر خود را انتخاب کنید';
 
@@ -356,7 +417,7 @@
                  * Decide to fill input
                  */
                 if (this.inputSelectedDate) {
-                    this.date = new Date(this.inputSelectedDate);
+                    this.date = new Date(this.inputSelectedDate.toString());
                     this.calendar.text = this._convertToPersianDate(this.date, 'combo');
                 } else {
                     this.calendar.text = '';
@@ -368,10 +429,18 @@
                 this._createCalendar();
                 this._checkLeapYear();
             },
+
+            /**
+             *
+             */
             removeDate () {
                 this.calendar.text = '';
                 this.$emit('changeDate', null);
             },
+
+            /**
+             *
+             */
             toggleCalendar () {
                 const selector = '#' + this.calendarSelector;
                 if ($(selector).hasClass('d-none')) {
@@ -382,23 +451,56 @@
                     this.closeCalendar();
                 }
             },
+
+            /**
+             *
+             */
             closeCalendar () {
                 $('.app-calendar').addClass('d-none');
                 this.flags.showDates = true;
                 this.flags.showMonths = false;
                 this.flags.showYears = false;
             },
+
+            /**
+             *
+             */
             selectDay (day) {
-                for (let i = 0; i < 42; i++) {
-                    this.dayArray[i].isSelected = false;
-                }
+                /**
+                 * reset all selected highlights
+                 */
+                this.dayArray.forEach(item => {
+                    item.isSelected = false;
+                });
+
+                /**
+                 * highlight the selected day
+                 */
                 day.isSelected = true;
-                this.date = new Date(day.dateFormat);
-                this.$emit('changeDate', this.date);
-                this._updateModel(this.date);
+
+                const date = new Date(day.dateFormat);
+                this.date = date;
+
+                /**
+                 * update models
+                 */
+                this._updateModel(date);
+
+                /**
+                 * update parent
+                 */
+                this.$emit('changeDate', date);
+
+                /**
+                 * close calendar
+                 */
                 this.closeCalendar();
             },
-            checkSelectability (day) {
+
+            /**
+             *
+             */
+            checkSelectabile (day) {
                 let condition = false;
                 if (!this.inputMinDate && !this.inputMaxDate) {
                     condition = true;
@@ -413,31 +515,60 @@
                     this.selectDay(day);
                 }
             },
+
+            /**
+             *
+             */
             goToToday () {
                 this.date = new Date();
                 this._updateModel(this.date);
                 this._checkLeapYear();
                 this.closeCalendar();
             },
+
+            /**
+             *
+             */
             goToNextMonth () {
                 this._checkLeapYear();
-                this.date.setDate(this.date.getDate() + parseInt(this.monthInfo.days, 0));
+                this.date.setDate(this.date.getDate() + parseInt(this.monthInfo.days));
 
+                /**
+                 * update calendar items
+                 */
                 this._createCalendar();
             },
+
+            /**
+             *
+             */
             goToCurrentMonth () {
                 this.date = new Date();
                 this._checkLeapYear();
                 this.date.setDate(this.date.getDate());
 
+                /**
+                 * update calendar items
+                 */
                 this._createCalendar();
             },
+
+            /**
+             *
+             */
             goToPreviousMonth () {
                 this._checkLeapYear();
-                this.date.setDate(this.date.getDate() - parseInt(this.monthInfo.previousMonthAmount, 0));
+                this.date.setDate(this.date.getDate() - parseInt(this.monthInfo.previousMonthAmount));
 
+                /**
+                 * update calendar items
+                 */
                 this._createCalendar();
             },
+
+            /**
+             *
+             */
             _createCalendar (date) {
                 let firstDayOfMonth;
                 let persianWeekday;
@@ -465,7 +596,7 @@
                 for (const i in this.daysInPersian) {
                     if (this.daysInPersian.hasOwnProperty(i)) {
                         if (this.daysInPersian[i].searchable === persianWeekday) {
-                            persianWeekdayIndex = parseInt(i, 0) + 1;
+                            persianWeekdayIndex = parseInt(i) + 1;
                         }
                     }
                 }
@@ -558,11 +689,19 @@
 
                 this.flags.initialCalendar = true;
             },
+
+            /**
+             *
+             */
             _updateModel (date) {
-                this.calendar.text = this._convertToPersianDate(date, 'combo');
                 this.calendar.hour = this._getHour(date);
                 this.calendar.minute = this._getMinute(date);
+                this.calendar.text = this._convertToPersianDate(date, 'combo');
             },
+
+            /**
+             *
+             */
             _checkLeapYear () {
                 const date = this.date;
                 if (this._isLeapYear(this._getPersianYear(date))) {
@@ -571,6 +710,10 @@
                     this.monthsInPersian[11].days = 29;
                 }
             },
+
+            /**
+             *
+             */
             _isCounterSelected (counter) {
                 if (!this.inputSelectedDate) {
                     return false;
@@ -583,6 +726,10 @@
 
                 return (counter === dateDay && this.monthInfo.title === dateMonth && this.yearInfo === dateYear);
             },
+
+            /**
+             *
+             */
             _isCounterTodayDate (counter) {
                 const dateDay = this._getPersianDay(new Date());
                 const dateMonth = this._getPersianMonth(new Date());
@@ -591,6 +738,10 @@
 
                 return (counter === dateDay && this.monthInfo.title === dateMonth && this.yearInfo === dateYear);
             },
+
+            /**
+             *
+             */
             _resetData () {
                 this.dayArray = [];
                 for (let i = 0; i < 42; i++) {
@@ -604,23 +755,38 @@
                     });
                 }
             },
+
+            /**
+             *
+             */
             _getFirstDayOfMonth (date) {
                 const firstDay = new Date(date);
                 const pastDays = parseInt(this._getPersianDay(date));
                 firstDay.setDate(firstDay.getDate() - pastDays + 1);
+
                 return firstDay;
             },
+
+            /**
+             *
+             */
             _getFirstDayOfYear (date) {
+                let pastDays = 0;
+
                 date = this._getFirstDayOfMonth(date);
                 const getMonth = this._getPersianMonth(new Date(date), '2-digit');
                 const getMonthIndex = parseInt(this._convertToEnglishDigit(getMonth)) - 1;
-                let pastDays = 0;
 
                 for (let index = 0; index < getMonthIndex; index++) {
                     pastDays += parseInt(this.monthsInPersian[index].days);
                 }
+
                 return new Date(date.setDate(date.getDate() - pastDays));
             },
+
+            /**
+             *
+             */
             _fillMonthInfo (date) {
                 let persianDate,
                     monthIndex,
@@ -637,8 +803,8 @@
                             monthIndex = index;
                             daysAmount = this.monthsInPersian[index].days;
                             monthName = this.monthsInPersian[index].title;
-                            nexMonthAmount = this.monthsInPersian[parseInt(index, 0) + 1 > 11 ? 0 : parseInt(index, 0) + 1].days;
-                            previousMonthAmount = this.monthsInPersian[parseInt(index, 0) - 1 < 0 ? 11 : parseInt(index, 0) - 1].days;
+                            nexMonthAmount = this.monthsInPersian[parseInt(index) + 1 > 11 ? 0 : parseInt(index) + 1].days;
+                            previousMonthAmount = this.monthsInPersian[parseInt(index) - 1 < 0 ? 11 : parseInt(index) - 1].days;
                         }
                     }
                 }
@@ -664,25 +830,49 @@
                     firstDayOfMonth: date
                 };
             },
+
+            /**
+             *
+             */
             _isLeapYear (year) {
                 return ((((((year - ((year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
             },
+
+            /**
+             *
+             */
             _getPersianDay (date, opt) {
                 const options = { day: opt || 'numeric' };
                 return this._convertToEnglishDigit(date.toLocaleDateString('fa-persian', options));
             },
+
+            /**
+             *
+             */
             _getPersianWeekday (date, opt) {
                 const options = { weekday: opt || 'long' };
                 return date.toLocaleDateString('fa-persian', options);
             },
+
+            /**
+             *
+             */
             _getPersianMonth (date, opt) {
                 const options = { month: opt || 'long' };
                 return date.toLocaleDateString('fa-persian', options);
             },
+
+            /**
+             *
+             */
             _getPersianYear (date, opt) {
                 const options = { year: opt || 'numeric' };
                 return this._convertToEnglishDigit(date.toLocaleDateString('fa-persian', options));
             },
+
+            /**
+             *
+             */
             _getHour (date) {
                 const options = { hour: '2-digit' };
                 const output = date.toLocaleString('fa-persian', options);
@@ -691,6 +881,10 @@
                 }
                 return output;
             },
+
+            /**
+             *
+             */
             _getMinute (date) {
                 const options = { minute: '2-digit' };
                 const output = date.toLocaleString('fa-persian', options);
@@ -699,6 +893,10 @@
                 }
                 return output;
             },
+
+            /**
+             *
+             */
             _convertToPersianDate (date, type) {
                 if (!date) {
                     return;
@@ -731,6 +929,10 @@
                 }
                 return `${year}/${month}/${day}`;
             },
+
+            /**
+             *
+             */
             _convertToEnglishDigit (string) {
                 return string.replace(/[\u0660-\u0669]/g, (c) => {
                     return c.charCodeAt(0) - 0x0660;
@@ -747,8 +949,8 @@
                  * Month Index Selected
                  */
                 let differenceYear;
-                let increasingDay = 0;
                 let firstDayOfYear;
+                let increasingDay = 0;
 
                 if (!firstDayOfMonth) {
                     firstDayOfMonth = this.monthInfo.firstDayOfMonth;
@@ -757,11 +959,9 @@
                 /**
                  * Reset is selected
                  */
-                for (const i in this.monthsInPersian) {
-                    if (this.monthsInPersian.hasOwnProperty(i)) {
-                        this.monthsInPersian[i].isSelected = false;
-                    }
-                }
+                this.monthsInPersian.forEach(item => {
+                    item.isSelected = false;
+                });
 
                 /**
                  * Find and select month
@@ -789,13 +989,10 @@
                 /**
                  * Find and select month
                  */
-                for (const i in this.monthsInPersian) {
-                    if (this.monthsInPersian.hasOwnProperty(i)) {
-                        this.monthsInPersian[i].firstDay =
-                            new Date(firstDayOfYear.setDate(firstDayOfYear.getDate() + increasingDay));
-                        increasingDay = this.monthsInPersian[i].days;
-                    }
-                }
+                this.monthsInPersian.forEach(item => {
+                    item.firstDay = new Date(firstDayOfYear.setDate(firstDayOfYear.getDate() + increasingDay));
+                    increasingDay = item.days;
+                });
 
                 /**
                  * show other panel
@@ -804,6 +1001,17 @@
                 this.flags.showYears = false;
                 this.flags.showMonths = true;
             },
+
+            /**
+             *
+             */
+            showThisMonth () {
+            },
+
+            /**
+             *
+             * @param firstDayOfMonth
+             */
             selectMonth (firstDayOfMonth) {
                 /**
                  * Update date and month
@@ -823,19 +1031,22 @@
                  */
                 this._createCalendar();
             },
-            showYears (yearToShow) {
-                if (!yearToShow) {
-                    yearToShow = 0;
-                }
 
+            /**
+             *
+             */
+            showYears () {
                 /**
                  * Create year array
                  */
                 this.yearsInPersian = [];
-                for (let i = yearToShow - 4; i <= yearToShow + 4; i++) {
-                    if (parseInt(this.yearInfo) + i > this._getPersianYear(this.inputMaxYear) || parseInt(this.yearInfo) + i < this._getPersianYear(this.inputMinYear)) {
-                        continue;
+                for (let i = (this.yearToShow - 7); i <= (this.yearToShow + 7); i++) {
+                    if (this.inputMaxYear || this.inputMinYear) {
+                        if (parseInt(this.yearInfo) + i > this._getPersianYear(this.inputMaxYear) || parseInt(this.yearInfo) + i < this._getPersianYear(this.inputMinYear)) {
+                            continue;
+                        }
                     }
+
                     const generatedYear = parseInt(this.yearInfo) + i;
                     this.yearsInPersian.push({
                         title: generatedYear,
@@ -843,15 +1054,15 @@
                     });
                 }
 
-                if (this.yearsInPersian.length === 0) {
-                    for (let i = 0; i < 9; i++) {
-                        const generatedYear = parseInt(this._getPersianYear(this.inputMaxYear)) - i;
-                        this.yearsInPersian.push({
-                            title: generatedYear,
-                            isSelected: false
-                        });
-                    }
-                }
+                // if (this.yearsInPersian.length === 0) {
+                //     for (let i = 0; i < 14; i++) {
+                //         const generatedYear = parseInt(this._getPersianYear(this.inputMaxYear)) - i;
+                //         this.yearsInPersian.push({
+                //             title: generatedYear,
+                //             isSelected: false
+                //         });
+                //     }
+                // }
 
                 /**
                  * Find and select year
@@ -872,6 +1083,11 @@
                 this.flags.showMonths = false;
                 this.flags.showYears = true;
             },
+
+            /**
+             *
+             * @param year
+             */
             selectYear (year) {
                 /**
                  * show other panel
@@ -890,20 +1106,45 @@
                  */
                 this.showMonths();
             },
+
+            /**
+             *
+             */
             showYearGoUp () {
-                if (this.yearsInPersian[0].title <= this._getPersianYear(this.inputMinYear)) {
+                /**
+                 * check inputMinYear
+                 * @type {number}
+                 */
+                if (this.inputMinYear && this.yearsInPersian[0].title <= this._getPersianYear(this.inputMinYear)) {
                     return;
                 }
 
-                this.yearToShow -= 3;
+                this.yearToShow -= 6;
                 this.showYears(this.yearToShow);
             },
+
+            /**
+             *
+             */
+            showThisYear () {
+                this.yearToShow = 0;
+                this.showYears(this.yearToShow);
+            },
+
+            /**
+             *
+             */
             showYearGoDown () {
+                /**
+                 * check inputMaxYear
+                 * @type {number}
+                 */
                 const index = this.yearsInPersian.length - 1;
-                if (this.yearsInPersian[index].title >= this._getPersianYear(this.inputMaxYear)) {
+                if (this.inputMaxYear && this.yearsInPersian[index].title >= this._getPersianYear(this.inputMaxYear)) {
                     return;
                 }
-                this.yearToShow += 3;
+
+                this.yearToShow += 6;
                 this.showYears(this.yearToShow);
             },
 
@@ -911,28 +1152,50 @@
              * selecting an hour and minute
              */
             changeHour () {
-                if (!this.calendar.hour) {
-                    this.calendar.hour = 0;
-                }
                 const selectedDate = this.inputSelectedDate;
                 const newHour = this._convertToEnglishDigit(this.calendar.hour);
                 const date = new Date(selectedDate.setHours(newHour));
                 this.monthInfo = this._fillMonthInfo(date);
+
+                /**
+                 * update parents
+                 */
                 this.$emit('changeDate', date);
+
+                /**
+                 * update models
+                 */
                 this._updateModel(date);
+
+                /**
+                 * update calendar items
+                 */
                 this._createCalendar(date);
                 this.date = date;
             },
+
+            /**
+             *
+             */
             changeMinute () {
-                if (!this.calendar.minute) {
-                    this.calendar.minute = 0;
-                }
                 const selectedDate = this.inputSelectedDate;
                 const newMinute = this._convertToEnglishDigit(this.calendar.minute);
                 const date = new Date(selectedDate.setMinutes(newMinute));
                 this.monthInfo = this._fillMonthInfo(date);
+
+                /**
+                 * update parents
+                 */
                 this.$emit('changeDate', date);
+
+                /**
+                 * update models
+                 */
                 this._updateModel(date);
+
+                /**
+                 * update calendar items
+                 */
                 this._createCalendar(date);
                 this.date = date;
             }

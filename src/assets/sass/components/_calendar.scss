@@ -1,4 +1,4 @@
-$calendar-width: 300px;
+$calendar-width: 320px;
 $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
 
 .app-calendar-row {
@@ -13,8 +13,6 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
 .app-calendar {
     #{$right}: 0;
     height: auto;
-    padding: 5px;
-    font-size: 13px;
     position: absolute;
     width: $calendar-width;
     z-index: $zindex-dropdown;
@@ -26,53 +24,12 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
         max-width: $calendar-width;
     }
 
-    .app-calendar-header {
-        .btn-icon {
-            width: 30px;
-            color: white;
-            border: none;
-            margin: 0 1px;
-            padding: 3px 0 3px;
-            background-color: #333;
-            @include border-radius(0);
-
-            &:hover {
-                @include opacity(0.95)
-            }
-        }
-
-        .app-calendar-header-month,
-        .app-calendar-header-choose {
-            color: white;
-            line-height: 1;
-            font-size: 15px;
-            padding: 4px 6px 6px;
-        }
-
-        .app-calendar-header-month {
-            margin: 0 1px;
-            width: calc(50% - 32px - 2px);
-
-            &:hover {
-                @include opacity(0.9)
-            }
-        }
-
-        .app-calendar-header-choose {
-            width: 100%;
-            margin-bottom: 10px;
-            background-color: #333;
-        }
+    .bg-gray {
+        background-color: #333;
     }
 
-    .app-calendar-show-more,
-    .app-calendar-show-less {
-        background-color: #eee;
-        border: 1px solid #ddd;
-        width: calc(100% + 1px);
-        padding: 0;
-        color: #555;
-        @include border-radius(0);
+    .app-calendar-icon {
+        font-size: 20px;
     }
 
     .app-calendar-time-separator {
@@ -81,14 +38,6 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
         top: 8px;
         width: 1px;
         margin: auto;
-    }
-
-    .app-calendar-show-more {
-        margin: 4px -1px 0 0;
-    }
-
-    .app-calendar-show-less {
-        margin: -4px -1px 4px 0;
     }
 
     ul {
@@ -188,9 +137,6 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
         }
 
         &.show-year {
-            width: 100%;
-            float: $right;
-
             li {
                 width: calc(33.33333% + 1px);
                 cursor: pointer;
