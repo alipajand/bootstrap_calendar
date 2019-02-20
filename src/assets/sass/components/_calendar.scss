@@ -2,6 +2,10 @@ $calendar-width: 320px;
 $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
 
 .app-calendar-row {
+    .pointer {
+        cursor: pointer;
+    }
+
     .app-calendar-input {
         &, &[readonly] {
             cursor: pointer;
@@ -29,7 +33,8 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
     }
 
     .app-calendar-icon {
-        font-size: 20px;
+        bottom: -2px;
+        position: relative;
     }
 
     .app-calendar-time-separator {
