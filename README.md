@@ -1,6 +1,6 @@
 # Persian Calendar
 
-> persian calendar project is based on vue js
+> persian calendar project based on vuejs and bootstrap vue
 
 ## Build Setup
 
