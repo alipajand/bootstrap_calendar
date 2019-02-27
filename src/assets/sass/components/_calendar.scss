@@ -132,6 +132,22 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
                 width: calc(33.33333% + 1px);
                 cursor: pointer;
 
+                &:nth-child(1) {
+                    @include border-radius(0 $border-radius 0 0)
+                }
+
+                &:nth-child(3) {
+                    @include border-radius($border-radius 0 0 0)
+                }
+
+                &:nth-child(10) {
+                    @include border-radius(0 0 $border-radius 0)
+                }
+
+                &:nth-child(12) {
+                    @include border-radius(0 0 0 $border-radius)
+                }
+
                 &.month-isSelected {
                     color: #fff;
                     padding: 2px;
@@ -146,6 +162,22 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
                 width: calc(33.33333% + 1px);
                 cursor: pointer;
 
+                &:nth-child(1) {
+                    @include border-radius(0 $border-radius 0 0)
+                }
+
+                &:nth-child(3) {
+                    @include border-radius($border-radius 0 0 0)
+                }
+
+                &:nth-child(13) {
+                    @include border-radius(0 0 $border-radius 0)
+                }
+
+                &:nth-child(15) {
+                    @include border-radius(0 0 0 $border-radius)
+                }
+
                 &.year-isSelected {
                     color: #fff;
                     padding: 2px;
@@ -154,6 +186,14 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
                 }
             }
         }
+    }
+
+    .radius-right {
+        @include border-radius(0 $border-radius $border-radius 0 !important);
+    }
+
+    .radius-left {
+        @include border-radius($border-radius 0 0 $border-radius !important);
     }
 }
 

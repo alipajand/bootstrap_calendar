@@ -41,7 +41,7 @@
                 v-if="flags.showCalendar && flags.initialCalendar">
             <div class="card-body p-2">
                 <div v-show="flags.showDates">
-                    <b-row class="pt-1">
+                    <b-row>
                         <b-col cols="2">
                             <b-button block
                                       size="lg"
@@ -57,7 +57,7 @@
                             <b-button block
                                       size="lg"
                                       variant="primary"
-                                      class="rounded-0 border-0 py-1 shadow-none"
+                                      class="rounded-0 border-0 py-1 shadow-none radius-right"
                                       v-on:click="showMonths(monthInfo.firstDayOfMonth)">
                                 {{monthInfo.title}}
                             </b-button>
@@ -67,7 +67,7 @@
                             <b-button block
                                       size="lg"
                                       variant="primary"
-                                      class="rounded-0 border-0 py-1 shadow-none"
+                                      class="rounded-0 border-0 py-1 shadow-none radius-left"
                                       v-on:click="showYears()">
                                 {{yearInfo}}
                             </b-button>
@@ -186,7 +186,7 @@
                         </b-col>
                     </b-row>
                     <b-row>
-                        <b-col class="p-0">
+                        <b-col cols="12">
                             <b-button block
                                       variant="light"
                                       v-on:click="goToToday()">
@@ -333,7 +333,6 @@
             return {
                 date: new Date(),
                 dayArray: [],
-                todayDate: new Date(),
                 yearToShow: 0,
                 yearInfo: null,
                 monthInfo: null,
@@ -408,7 +407,6 @@
                 if (reference && this.flags.showCalendar) {
                     if (!(reference.contains(elements))) {
                         // this.flags.showCalendar = false;
-                        console.log('should close calendar');
                     }
                 }
             },
@@ -530,7 +528,7 @@
              *
              */
             goToToday() {
-                this.selectDay(this.todayDate);
+                this.selectDay({ dateFormat: new Date() });
             },
 
             /**
@@ -649,7 +647,6 @@
                     }
                     if (this.isCounterTodayDate(counter)) {
                         dataArray.isToday = true;
-                        this.todayDate = dataArray;
                     }
                     counter++;
                 }
