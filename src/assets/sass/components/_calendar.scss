@@ -17,6 +17,7 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
 .app-calendar {
     #{$right}: 0;
     height: auto;
+    margin-top: -$form-group-margin-bottom;
     position: absolute;
     width: $calendar-width;
     z-index: $zindex-dropdown;
