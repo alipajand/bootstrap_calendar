@@ -17,7 +17,7 @@
                 <b-input-group-text slot="prepend">
                     <i class="far fa-calendar-alt pointer app-calendar-icon"></i>
                 </b-input-group-text>
-                <b-input-group-text slot="prepend"
+                <b-input-group-text slot="append"
                                     v-on:click="removeDate()"
                                     v-if="calendar.text && inputShowIcons">
                     <i class="fa fa-times pointer app-calendar-icon"></i>
@@ -175,7 +175,7 @@
                     </b-row>
                     <b-row>
                         <b-col>
-                            <ul class="list-unstyled mx-0 p-0 mb-2 float-right show-months">
+                            <ul class="list-unstyled mx-0 p-0 mb-2 w-100 float-right show-months">
                                 <li v-for="(month, index) in monthsInPersian"
                                     v-bind:key="index"
                                     v-on:click="selectMonth(month.firstDay)"
@@ -185,7 +185,7 @@
                             </ul>
                         </b-col>
                     </b-row>
-                    <b-row>
+                    <b-row v-if="inputShowFooterButtons">
                         <b-col cols="12">
                             <b-button block
                                       variant="light"
@@ -205,7 +205,7 @@
                     </b-row>
                     <b-row>
                         <b-col>
-                            <ul class="list-unstyled mx-0 mb-2 p-0 float-right show-year">
+                            <ul class="list-unstyled mx-0 mb-2 p-0 w-100 float-right show-year">
                                 <template v-for="(year, index) in yearsInPersian">
                                     <li v-if="year.title"
                                         v-bind:key="index"
@@ -225,7 +225,7 @@
                                 <i class="fas fa-angle-up app-calendar-icon"></i>
                             </b-button>
                         </b-col>
-                        <b-col class="p-0">
+                        <b-col class="p-0" v-if="inputShowFooterButtons">
                             <b-button block
                                       variant="light"
                                       v-on:click="goToToday()">
