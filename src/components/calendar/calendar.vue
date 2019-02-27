@@ -12,7 +12,7 @@
                               class="app-calendar-input bg-white"
                               v-bind:horizontal="inputHorizontalView"
                               v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
-                              v-on:click.native.prevent="toggleCalendar()">
+                              v-on:click.native.prevent="toggleCalendar($event)">
                 </b-form-input>
                 <b-input-group-text slot="prepend">
                     <i class="far fa-calendar-alt pointer app-calendar-icon"></i>
@@ -30,7 +30,7 @@
                       v-model="calendar.text"
                       class="app-calendar-input bg-white"
                       v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
-                      v-on:click.native="toggleCalendar()"
+                      v-on:click.native.prevent="toggleCalendar($event)"
                       v-else>
         </b-form-input>
 
@@ -403,14 +403,14 @@
             hideCalendar(e) {
                 const elements = e.target;
                 const reference = this.$refs[this.inputCalendarSelector];
-
                 if (reference && this.flags.showCalendar) {
-                    if (!(reference.contains(elements))) {
-                        // this.flags.showCalendar = false;
+                    if (!(reference.contains(elements)) && !$(elements).hasClass('app-calendar-input')) {
+                        this.flags.showCalendar = false;
                     }
                 }
             },
-            toggleCalendar() {
+            toggleCalendar(e) {
+                e.preventDefault();
                 this.flags.showCalendar = !this.flags.showCalendar;
             },
 
