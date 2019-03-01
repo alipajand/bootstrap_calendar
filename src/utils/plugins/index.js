@@ -1,10 +1,11 @@
 /**
  * Register a component plugin as being loaded. returns true if component plugin already registered
- * @param {object} Vue
- * @param {string} Component name
- * @param {object} Component definition
+ * @param Vue
+ * @param name
+ * @param def
+ * @returns {*}
  */
-export function registerComponent (Vue, name, def) {
+export function registerComponent(Vue, name, def) {
     Vue._bootstrap_vue_components_ = Vue._bootstrap_vue_components_ || {};
     const loaded = Vue._bootstrap_vue_components_[name];
     if (!loaded && def && name) {
@@ -16,22 +17,25 @@ export function registerComponent (Vue, name, def) {
 
 /**
  * Register a group of components as being loaded.
- * @param {object} Vue
- * @param {object} Object of component definitions
+ * @param Vue
+ * @param components
  */
-export function registerComponents (Vue, components) {
-    for (let component in components) {
-        registerComponent(Vue, component, components[component]);
+export function registerComponents(Vue, components) {
+    for (const component in components) {
+        if (components.hasOwnProperty(component)) {
+            registerComponent(Vue, component, components[component]);
+        }
     }
 }
 
 /**
  * Register a directive as being loaded. returns true if directive plugin already registered
- * @param {object} Vue
- * @param {string} Directive name
- * @param {object} Directive definition
+ * @param Vue
+ * @param name
+ * @param def
+ * @returns {*}
  */
-export function registerDirective (Vue, name, def) {
+export function registerDirective(Vue, name, def) {
     Vue._bootstrap_vue_directives_ = Vue._bootstrap_vue_directives_ || {};
     const loaded = Vue._bootstrap_vue_directives_[name];
     if (!loaded && def && name) {
@@ -43,20 +47,22 @@ export function registerDirective (Vue, name, def) {
 
 /**
  * Register a group of directives as being loaded.
- * @param {object} Vue
- * @param {object} Object of directive definitions
+ * @param Vue
+ * @param directives
  */
-export function registerDirectives (Vue, directives) {
-    for (let directive in directives) {
-        registerDirective(Vue, directive, directives[directive]);
+export function registerDirectives(Vue, directives) {
+    for (const directive in directives) {
+        if (directives.hasOwnProperty(directive)) {
+            registerDirective(Vue, directive, directives[directive]);
+        }
     }
 }
 
 /**
  * Install plugin if window.Vue available
- * @param {object} Plugin definition
+ * @param VuePlugin
  */
-export function vueUse (VuePlugin) {
+export function vueUse(VuePlugin) {
     if (typeof window !== 'undefined' && window.Vue) {
         window.Vue.use(VuePlugin);
     }

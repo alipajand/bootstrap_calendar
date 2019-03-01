@@ -248,6 +248,7 @@
 
 <script type="text/javascript">
     export default {
+        name: 'CalendarComponent',
         props: {
             inputMaxYear: {
                 type: Date,

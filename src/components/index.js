@@ -1,5 +1,5 @@
-import CalendarComponent from './calendar';
+import CalendarComponent from './calendar/index.vue';
 
-export {
+export default {
     CalendarComponent
 };

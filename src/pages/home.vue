@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import calendarComponent from '../components/calendar/calendar';
+    import CalendarComponent from '../components';
 
     export default {
         name: 'home',
@@ -26,7 +26,7 @@
             };
         },
         components: {
-            calendarComponent
+            CalendarComponent
         }
     };
 </script>
