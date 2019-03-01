@@ -1,8 +1,9 @@
 <template>
     <div class="app-calendar-row position-relative"
-         v-bind:name="inputCalendarSelector">
+         v-bind:name="inputCalendarSelector"
+         v-bind:class="inputShowTitle ? 'app-calendar-row-titlebar' : ''">
         <b-form-group class="input-with-icon"
-                      v-bind:label="placeholder"
+                      v-bind:label="inputTitle"
                       v-if="inputShowTitle">
             <b-input-group>
                 <b-form-input type="text"
@@ -57,6 +58,7 @@
                             <b-button block
                                       size="lg"
                                       variant="primary"
+                                      v-bind:style="{ backgroundColor: inputPrimaryColor}"
                                       class="rounded-0 border-0 py-1 shadow-none radius-right"
                                       v-on:click="showMonths(monthInfo.firstDayOfMonth)">
                                 {{monthInfo.title}}
@@ -67,6 +69,7 @@
                             <b-button block
                                       size="lg"
                                       variant="primary"
+                                      v-bind:style="{ backgroundColor: inputPrimaryColor}"
                                       class="rounded-0 border-0 py-1 shadow-none radius-left"
                                       v-on:click="showYears()">
                                 {{yearInfo}}
@@ -93,6 +96,8 @@
                             <ul class="list-unstyled show-days float-right p-0">
                                 <li v-for="(day, index) in dayArray"
                                     v-bind:key="index"
+                                    v-b-tooltip
+                                    v-bind:title="day.isSelected ? 'امروز' : ''"
                                     v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
@@ -101,6 +106,7 @@
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
+                                    v-bind:style="{ backgroundColor: day.isSelected ? inputPrimaryColor : ''}"
                                     v-on:click="checkSelectable(day)">
                                     {{day.title}}
                                 </li>
@@ -179,6 +185,7 @@
                                 <li v-for="(month, index) in monthsInPersian"
                                     v-bind:key="index"
                                     v-on:click="selectMonth(month.firstDay)"
+                                    v-bind:style="{ backgroundColor: month.isSelected ? inputPrimaryColor : ''}"
                                     v-bind:class="month.isSelected ? 'month-isSelected' : ''">
                                     {{month.title}}
                                 </li>
@@ -210,6 +217,7 @@
                                     <li v-if="year.title"
                                         v-bind:key="index"
                                         v-on:click="selectYear(year.title)"
+                                        v-bind:style="{ backgroundColor: year.isSelected ? inputPrimaryColor : ''}"
                                         v-bind:class="year.isSelected ? 'year-isSelected' : ''">
                                         {{year.title}}
                                     </li>
@@ -315,8 +323,17 @@
                 type: String,
                 required: false
             },
+            inputTitle: {
+                type: String,
+                required: false
+            },
             inputSelectedDate: {
                 type: Date,
+                required: false
+            },
+            inputPrimaryColor: {
+                type: String,
+                default: '#007bff',
                 required: false
             },
             inputCalendarSelector: {
@@ -419,10 +436,10 @@
              * close all 'app-calendar' panels
              */
             closeCalendar() {
-                $('.app-calendar').addClass('d-none');
                 this.flags.showDates = true;
-                this.flags.showMonths = false;
                 this.flags.showYears = false;
+                this.flags.showMonths = false;
+                this.flags.showCalendar = false;
             },
 
             /**
@@ -1194,3 +1211,8 @@
         }
     };
 </script>
+
+<style lang="scss" scoped>
+    @import "../assets/sass/dependencies.scss";
+    @import "../assets/sass/components/_calendar.scss";
+</style>

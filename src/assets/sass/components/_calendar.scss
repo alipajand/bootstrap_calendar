@@ -1,4 +1,4 @@
-$calendar-width: 320px !default;
+$calendar-width: 350px !default;
 $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
 
 .app-calendar-row {
@@ -14,20 +14,22 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
     }
 }
 
+.app-calendar-row-titlebar {
+    .app-calendar {
+        margin-top: -$form-group-margin-bottom + 0.2rem;
+    }
+}
+
 .app-calendar {
     #{$right}: 0;
     height: auto;
-    margin-top: -$form-group-margin-bottom;
+    width: 100%;
+    margin-top: 0.2rem;
     position: absolute;
-    width: $calendar-width;
+    max-width: $calendar-width;
     z-index: $zindex-dropdown;
     @include border-radius(5px);
     @include animation(fadeIn .2s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards);
-
-    @media (max-width: map-get($grid-breakpoints, 'sm')) {
-        width: 100%;
-        max-width: $calendar-width;
-    }
 
     .bg-gray {
         background-color: #333;
@@ -85,7 +87,7 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
                 }
 
                 &.day-isSelected {
-                    font-size: 15px;
+                    font-size: 20px;
                     line-height: 1.1;
                     color: #fff !important;
                     background-color: $primary;
@@ -152,7 +154,7 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
                 &.month-isSelected {
                     color: #fff;
                     padding: 2px;
-                    font-size: 15px;
+                    font-size: 16px;
                     background-color: $primary;
                 }
             }
@@ -182,7 +184,7 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
                 &.year-isSelected {
                     color: #fff;
                     padding: 2px;
-                    font-size: 15px;
+                    font-size: 19px;
                     background-color: $primary;
                 }
             }
