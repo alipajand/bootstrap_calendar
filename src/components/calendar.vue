@@ -1,7 +1,7 @@
 <template>
     <div class="app-calendar-row position-relative"
          v-bind:name="inputCalendarSelector"
-         v-bind:class="inputShowTitle ? 'app-calendar-row-titlebar' : ''">
+         v-bind:class="inputShowTitle ? 'app-calendar-row-title-bar' : ''">
         <b-form-group class="input-with-icon"
                       v-bind:label="inputTitle"
                       v-if="inputShowTitle">
@@ -15,25 +15,32 @@
                               v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
                               v-on:click.native.prevent="toggleCalendar($event)">
                 </b-form-input>
-                <b-input-group-text slot="prepend">
+                <b-input-group-text slot="prepend"
+                                    v-if="inputShowIcons">
                     <i class="far fa-calendar-alt pointer app-calendar-icon"></i>
                 </b-input-group-text>
                 <b-input-group-text slot="append"
                                     v-on:click="removeDate()"
-                                    v-if="calendar.text && inputShowIcons">
+                                    v-if="calendar.text && inputShowIcons && inputShowRemoveIcon">
                     <i class="fa fa-times pointer app-calendar-icon"></i>
                 </b-input-group-text>
             </b-input-group>
         </b-form-group>
-        <b-form-input readonly
-                      type="text"
-                      autocomplete="off"
-                      v-model="calendar.text"
-                      class="app-calendar-input bg-white"
-                      v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
-                      v-on:click.native.prevent="toggleCalendar($event)"
-                      v-else>
-        </b-form-input>
+        <b-input-group v-else>
+            <b-form-input readonly
+                          type="text"
+                          autocomplete="off"
+                          v-model="calendar.text"
+                          class="app-calendar-input bg-white"
+                          v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
+                          v-on:click.native.prevent="toggleCalendar($event)">
+            </b-form-input>
+            <b-input-group-text slot="append"
+                                v-on:click="removeDate()"
+                                v-if="calendar.text && inputShowIcons && inputShowRemoveIcon">
+                <i class="fa fa-times pointer app-calendar-icon"></i>
+            </b-input-group-text>
+        </b-input-group>
 
         <b-card no-body
                 class="app-calendar shadow mb-3"
@@ -97,7 +104,7 @@
                                 <li v-for="(day, index) in dayArray"
                                     v-bind:key="index"
                                     v-b-tooltip
-                                    v-bind:title="day.isSelected ? 'امروز' : ''"
+                                    v-bind:title="day.isToday ? 'امروز' : day.isSelected ? 'انتخابی' : ''"
                                     v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
@@ -300,6 +307,11 @@
                 required: false
             },
             inputShowIcons: {
+                type: Boolean,
+                default: true,
+                required: false
+            },
+            inputShowRemoveIcon: {
                 type: Boolean,
                 default: true,
                 required: false

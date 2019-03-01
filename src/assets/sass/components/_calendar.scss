@@ -14,7 +14,7 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
     }
 }
 
-.app-calendar-row-titlebar {
+.app-calendar-row-title-bar {
     .app-calendar {
         margin-top: -$form-group-margin-bottom + 0.2rem;
     }
@@ -87,7 +87,7 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
                 }
 
                 &.day-isSelected {
-                    font-size: 20px;
+                    font-size: 18px;
                     line-height: 1.1;
                     color: #fff !important;
                     background-color: $primary;
