@@ -13,13 +13,6 @@
                                     v-bind:input-selected-date="calendar.selected"
                                     v-on:changeDate="calendar.selected = $event">
                 </calendar-component>
-                <hr class="my-5">
-                <calendar-component v-bind:input-show-title="false"
-                                    v-bind:input-title="'انتخاب تاریخ'"
-                                    v-bind:input-placeholder="'تاریخ مورد نظر خود را برگزینید'"
-                                    v-bind:input-selected-date="calendar.selected"
-                                    v-on:changeDate="calendar.selected = $event">
-                </calendar-component>
             </b-col>
         </b-row>
     </b-container>

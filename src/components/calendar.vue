@@ -352,14 +352,19 @@
                 type: String,
                 required: false,
                 default: 'app-calendar'
+            },
+            timeZone: {
+                type: String,
+                required: false,
+                default: 'UTC'
             }
         },
         computed: {
-            placeholder() {
+            placeholder () {
                 return this.inputPlaceholder || 'تاریخ مورد نظر خود را انتخاب کنید';
             }
         },
-        data() {
+        data () {
             return {
                 date: new Date(),
                 dayArray: [],
@@ -406,17 +411,17 @@
             };
         },
         watch: {
-            'inputSelectedDate': function() {
+            'inputSelectedDate': function () {
                 this.fillData();
             },
-            'inputMaxYear': function() {
+            'inputMaxYear': function () {
                 this.fillData();
             },
-            'inputMinYear': function() {
+            'inputMinYear': function () {
                 this.fillData();
             }
         },
-        mounted() {
+        mounted () {
             this.fillData();
 
             /**
@@ -430,7 +435,7 @@
             /**
              * toggle class
              */
-            hideCalendar(e) {
+            hideCalendar (e) {
                 const elements = e.target;
                 const reference = this.$refs[this.inputCalendarSelector];
                 if (reference && this.flags.showCalendar) {
@@ -439,7 +444,7 @@
                     }
                 }
             },
-            toggleCalendar(e) {
+            toggleCalendar (e) {
                 e.preventDefault();
                 this.flags.showCalendar = !this.flags.showCalendar;
             },
@@ -447,7 +452,7 @@
             /**
              * close all 'app-calendar' panels
              */
-            closeCalendar() {
+            closeCalendar () {
                 this.flags.showDates = true;
                 this.flags.showYears = false;
                 this.flags.showMonths = false;
@@ -457,7 +462,7 @@
             /**
              *
              */
-            fillData() {
+            fillData () {
                 /**
                  * Calculate First Day Of Year
                  */
@@ -491,7 +496,7 @@
             /**
              *
              */
-            removeDate() {
+            removeDate () {
                 this.calendar.text = '';
                 this.$emit('changeDate', null);
             },
@@ -499,7 +504,7 @@
             /**
              *
              */
-            selectDay(day) {
+            selectDay (day) {
                 /**
                  * reset all selected highlights
                  */
@@ -537,7 +542,7 @@
             /**
              *
              */
-            checkSelectable(day) {
+            checkSelectable (day) {
                 let condition = false;
                 if (!this.inputMinDate && !this.inputMaxDate) {
                     condition = true;
@@ -557,14 +562,14 @@
             /**
              *
              */
-            goToToday() {
+            goToToday () {
                 this.selectDay({ dateFormat: new Date() });
             },
 
             /**
              *
              */
-            goToNextMonth() {
+            goToNextMonth () {
                 this.checkLeapYear();
                 this.date.setDate(this.date.getDate() + parseInt(this.monthInfo.days));
 
@@ -577,7 +582,7 @@
             /**
              *
              */
-            goToCurrentMonth() {
+            goToCurrentMonth () {
                 this.date = new Date();
                 this.checkLeapYear();
                 this.date.setDate(this.date.getDate());
@@ -591,7 +596,7 @@
             /**
              *
              */
-            goToPreviousMonth() {
+            goToPreviousMonth () {
                 this.checkLeapYear();
                 this.date.setDate(this.date.getDate() - parseInt(this.monthInfo.previousMonthAmount));
 
@@ -604,7 +609,7 @@
             /**
              *
              */
-            createCalendar(date) {
+            createCalendar (date) {
                 let firstDayOfMonth;
                 let persianWeekday;
                 let persianWeekdayIndex;
@@ -728,7 +733,7 @@
             /**
              *
              */
-            updateModel(date) {
+            updateModel (date) {
                 this.calendar.hour = this.getHour(date);
                 this.calendar.minute = this.getMinute(date);
                 this.calendar.text = this.convertToPersianDate(date, 'combo');
@@ -737,7 +742,7 @@
             /**
              *
              */
-            checkLeapYear() {
+            checkLeapYear () {
                 const date = this.date;
                 if (this.isLeapYear(this.getPersianYear(date))) {
                     this.monthsInPersian[11].days = 30;
@@ -749,7 +754,7 @@
             /**
              *
              */
-            isCounterSelected(counter) {
+            isCounterSelected (counter) {
                 if (!this.inputSelectedDate) {
                     return false;
                 }
@@ -765,7 +770,7 @@
             /**
              *
              */
-            isCounterTodayDate(counter) {
+            isCounterTodayDate (counter) {
                 const dateDay = this.getPersianDay(new Date());
                 const dateMonth = this.getPersianMonth(new Date());
                 const dateYear = this.getPersianYear(new Date());
@@ -777,7 +782,7 @@
             /**
              *
              */
-            resetData() {
+            resetData () {
                 this.dayArray = [];
                 for (let i = 0; i < 42; i++) {
                     this.dayArray.push({
@@ -794,7 +799,7 @@
             /**
              *
              */
-            getFirstDayOfMonth(date) {
+            getFirstDayOfMonth (date) {
                 const firstDay = new Date(date);
                 const pastDays = parseInt(this.getPersianDay(date));
                 firstDay.setDate(firstDay.getDate() - pastDays + 1);
@@ -805,7 +810,7 @@
             /**
              *
              */
-            getFirstDayOfYear(date) {
+            getFirstDayOfYear (date) {
                 let pastDays = 0;
 
                 date = this.getFirstDayOfMonth(date);
@@ -822,7 +827,7 @@
             /**
              *
              */
-            fillMonthInfo(date) {
+            fillMonthInfo (date) {
                 let persianDate,
                     monthIndex,
                     daysAmount,
@@ -869,47 +874,47 @@
             /**
              *
              */
-            isLeapYear(year) {
+            isLeapYear (year) {
                 return ((((((year - ((year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
             },
 
             /**
              *
              */
-            getPersianDay(date, opt) {
-                const options = { day: opt || 'numeric' };
+            getPersianDay (date, opt) {
+                const options = { day: opt || 'numeric', timeZone: this.timeZone };
                 return this.convertToEnglishDigit(date.toLocaleDateString('fa-persian', options));
             },
 
             /**
              *
              */
-            getPersianWeekday(date, opt) {
-                const options = { weekday: opt || 'long' };
+            getPersianWeekday (date, opt) {
+                const options = { weekday: opt || 'long', timeZone: this.timeZone };
                 return date.toLocaleDateString('fa-persian', options);
             },
 
             /**
              *
              */
-            getPersianMonth(date, opt) {
-                const options = { month: opt || 'long' };
+            getPersianMonth (date, opt) {
+                const options = { month: opt || 'long', timeZone: this.timeZone };
                 return date.toLocaleDateString('fa-persian', options);
             },
 
             /**
              *
              */
-            getPersianYear(date, opt) {
-                const options = { year: opt || 'numeric' };
+            getPersianYear (date, opt) {
+                const options = { year: opt || 'numeric', timeZone: this.timeZone };
                 return this.convertToEnglishDigit(date.toLocaleDateString('fa-persian', options));
             },
 
             /**
              *
              */
-            getHour(date) {
-                const options = { hour: '2-digit' };
+            getHour (date) {
+                const options = { hour: '2-digit', timeZone: this.timeZone };
                 const output = date.toLocaleString('fa-persian', options);
                 if (output.length <= 1) {
                     return '0' + output;
@@ -920,8 +925,8 @@
             /**
              *
              */
-            getMinute(date) {
-                const options = { minute: '2-digit' };
+            getMinute (date) {
+                const options = { minute: '2-digit', timeZone: this.timeZone };
                 const output = date.toLocaleString('fa-persian', options);
                 if (output.length <= 1) {
                     return '0' + output;
@@ -932,7 +937,7 @@
             /**
              *
              */
-            convertToPersianDate(date, type) {
+            convertToPersianDate (date, type) {
                 if (!date) {
                     return;
                 }
@@ -968,7 +973,7 @@
             /**
              *
              */
-            convertToEnglishDigit(string) {
+            convertToEnglishDigit (string) {
                 return string.replace(/[\u0660-\u0669]/g, (c) => {
                     return c.charCodeAt(0) - 0x0660;
                 }).replace(/[\u06f0-\u06f9]/g, (c) => {
@@ -979,7 +984,7 @@
             /**
              * Selecting a month and a year together
              */
-            showMonths(firstDayOfMonth) {
+            showMonths (firstDayOfMonth) {
                 /**
                  * Month Index Selected
                  */
@@ -1041,7 +1046,7 @@
              *
              * @param firstDayOfMonth
              */
-            selectMonth(firstDayOfMonth) {
+            selectMonth (firstDayOfMonth) {
                 /**
                  * Update date and month
                  */
@@ -1064,7 +1069,7 @@
             /**
              *
              */
-            showYears() {
+            showYears () {
                 /**
                  * Create year array
                  */
@@ -1117,7 +1122,7 @@
              *
              * @param year
              */
-            selectYear(year) {
+            selectYear (year) {
                 /**
                  * show other panel
                  */
@@ -1139,7 +1144,7 @@
             /**
              *
              */
-            showYearGoUp() {
+            showYearGoUp () {
                 /**
                  * check inputMinYear
                  * @type {number}
@@ -1155,7 +1160,7 @@
             /**
              *
              */
-            showYearGoDown() {
+            showYearGoDown () {
                 /**
                  * check inputMaxYear
                  * @type {number}
@@ -1172,7 +1177,7 @@
             /**
              * selecting an hour and minute
              */
-            changeHour() {
+            changeHour () {
                 const selectedDate = this.inputSelectedDate;
                 const newHour = this.convertToEnglishDigit(this.calendar.hour);
                 const date = new Date(selectedDate.setHours(newHour));
@@ -1198,7 +1203,7 @@
             /**
              *
              */
-            changeMinute() {
+            changeMinute () {
                 const selectedDate = this.inputSelectedDate;
                 const newMinute = this.convertToEnglishDigit(this.calendar.minute);
                 const date = new Date(selectedDate.setMinutes(newMinute));
