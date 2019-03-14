@@ -1230,6 +1230,5 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "../assets/sass/dependencies.scss";
     @import "../assets/sass/components/_calendar.scss";
 </style>

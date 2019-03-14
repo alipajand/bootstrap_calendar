@@ -1,5 +1,49 @@
+$direction: 'rtl' !default;
+$right: right !default;
+$left: left !default;
+
+$primary: #007bff !default;
+$danger: #dc3545 !default;
+
+$border-radius: .25rem !default;
+
+$form-group-margin-bottom: 1rem !default;
 $calendar-width: 350px !default;
 $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
+
+@mixin border-radius($radius...) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin user-select($select) {
+    -webkit-user-select: $select;
+    -moz-user-select: $select;
+    -ms-user-select: $select; // IE10+
+    user-select: $select;
+}
+
+@mixin animation($animation) {
+    -webkit-animation: $animation;
+    -o-animation: $animation;
+    animation: $animation;
+}
+
+@mixin transition($transition...) {
+    -webkit-transition: $transition;
+    -moz-transition: $transition;
+    -o-transition: $transition;
+    transition: $transition;
+}
+
+@mixin opacity($opacity) {
+    opacity: $opacity;
+    // IE8 filter
+    $opacity-ie: ($opacity * 100);
+    -ms-filter: alpha(opacity=$opacity-ie);
+    filter: alpha(opacity=$opacity-ie);
+}
 
 .app-calendar-row {
     .pointer {
@@ -202,21 +246,21 @@ $font-name-regular: 'iranYekan', 'b Yekan', Tahoma !default;
 
 @-webkit-keyframes fadeIn {
     from {
-        opacity: 0;
+        @include opacity(0);
     }
 
     to {
-        opacity: 1;
+        @include opacity(1);
     }
 }
 
 @keyframes fadeIn {
     from {
-        opacity: 0;
+        @include opacity(0);
     }
 
     to {
-        opacity: 1;
+        @include opacity(1);
     }
 }
 
