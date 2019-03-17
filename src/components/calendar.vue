@@ -26,7 +26,7 @@
                 </b-input-group-text>
             </b-input-group>
         </b-form-group>
-        <b-input-group v-else>
+        <b-input-group v-else-if="calendar.text && inputShowIcons && inputShowRemoveIcon">
             <b-form-input readonly
                           type="text"
                           autocomplete="off"
@@ -36,11 +36,19 @@
                           v-on:click.native.prevent="toggleCalendar($event)">
             </b-form-input>
             <b-input-group-text slot="append"
-                                v-on:click="removeDate()"
-                                v-if="calendar.text && inputShowIcons && inputShowRemoveIcon">
+                                v-on:click="removeDate()">
                 <i class="fa fa-times pointer app-calendar-icon"></i>
             </b-input-group-text>
         </b-input-group>
+        <b-form-input v-else
+                      readonly
+                      type="text"
+                      autocomplete="off"
+                      v-model="calendar.text"
+                      class="app-calendar-input bg-white"
+                      v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
+                      v-on:click.native.prevent="toggleCalendar($event)">
+        </b-form-input>
 
         <b-card no-body
                 class="app-calendar shadow mb-3"
