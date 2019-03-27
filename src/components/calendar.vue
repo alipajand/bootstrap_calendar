@@ -1253,5 +1253,6 @@
 
     .btn {
         height: 33px;
+        padding: 0;
     }
 </style>
