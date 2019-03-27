@@ -54,13 +54,13 @@
         </b-form-input>
 
         <b-card no-body
-                class="app-calendar shadow mb-3 fade-in-animation"
+                class="app-calendar shadow mb-3"
                 v-bind:id="inputCalendarSelector"
                 v-bind:ref="inputCalendarSelector"
                 v-if="flags.showCalendar && flags.initialCalendar">
             <div class="card-body p-2">
                 <div v-show="flags.showDates"
-                     class="fade-in-animation">
+                     class="card-in">
                     <b-row>
                         <b-col cols="2">
                             <b-button block
@@ -193,7 +193,7 @@
                     </b-row>
                 </div>
                 <div v-show="flags.showMonths"
-                     class="fade-in-animation">
+                     class="card-in">
                     <b-row>
                         <b-col cols="12">
                             <div class="bg-gray text-white rounded text-center mb-2 py-2">
@@ -226,7 +226,7 @@
                     </b-row>
                 </div>
                 <div v-show="flags.showYears"
-                     class="fade-in-animation">
+                     class="card-in">
                     <b-row>
                         <b-col cols="12">
                             <div class="bg-gray text-white rounded text-center mb-2 py-2">
