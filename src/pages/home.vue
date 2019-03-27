@@ -10,6 +10,8 @@
                                     v-bind:input-show-time="false"
                                     v-bind:input-title="'انتخاب تاریخ'"
                                     v-bind:input-primary-color="'#529b78'"
+                                    v-bind:input-max-year="maxYear"
+                                    v-bind:input-min-year="minYear"
                                     v-bind:input-selected-date="calendar.selected"
                                     v-on:changeDate="calendar.selected = $event">
                 </calendar-component>
@@ -22,12 +24,22 @@
     import CalendarComponent from '../components/calendar';
 
     export default {
-        data() {
+        data () {
             return {
                 calendar: {
                     selected: null
                 }
             };
+        },
+        computed: {
+            maxYear: function () {
+                const maxYearDate = new Date();
+                return new Date(maxYearDate.setFullYear(maxYearDate.getFullYear() - 15));
+            },
+            minYear: function () {
+                const minYearDate = new Date();
+                return new Date(minYearDate.setFullYear(minYearDate.getFullYear() - 80));
+            }
         },
         components: {
             CalendarComponent

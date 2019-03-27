@@ -112,17 +112,19 @@
                                 <li v-for="(day, index) in dayArray"
                                     v-bind:key="index"
                                     v-b-tooltip
-                                    v-bind:title="day.isToday ? 'امروز' : day.isSelected ? 'انتخابی' : ''"
+                                    v-bind:title="day.isToday && inputHighlightToday ? 'امروز' : ''"
                                     v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
                                         day.isToday && inputHighlightToday ? 'day-isToday' : '',
                                         inputMinDate && day.dateFormat < inputMinDate ? 'day-deactivate' : '',
                                         inputMaxDate && day.dateFormat > inputMaxDate ? 'day-deactivate' : '',
+                                        inputMinYear && day.dateFormat < inputMinYear ? 'day-deactivate' : '',
+                                        inputMaxYear && day.dateFormat > inputMaxYear ? 'day-deactivate' : '',
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
                                     v-bind:style="{ backgroundColor: day.isSelected ? inputPrimaryColor : ''}"
-                                    v-on:click="checkSelectable(day)">
+                                    v-on:click="checkSelectable(day) ? selectDay(day) : ''">
                                     {{day.title}}
                                 </li>
                             </ul>
@@ -232,7 +234,7 @@
                                     <li v-if="year.title"
                                         v-bind:key="index"
                                         v-on:click="selectYear(year.title)"
-                                        v-bind:style="{ backgroundColor: year.isSelected ? inputPrimaryColor : ''}"
+                                        v-bind:style="{backgroundColor: year.isSelected ? inputPrimaryColor : ''}"
                                         v-bind:class="year.isSelected ? 'year-isSelected' : ''">
                                         {{year.title}}
                                     </li>
@@ -421,12 +423,6 @@
         watch: {
             'inputSelectedDate': function () {
                 this.fillData();
-            },
-            'inputMaxYear': function () {
-                this.fillData();
-            },
-            'inputMinYear': function () {
-                this.fillData();
             }
         },
         mounted () {
@@ -551,20 +547,22 @@
              *
              */
             checkSelectable (day) {
-                let condition = false;
-                if (!this.inputMinDate && !this.inputMaxDate) {
-                    condition = true;
-                } else if (!this.inputMinDate && this.inputMaxDate && day.dateFormat <= this.inputMaxDate) {
-                    condition = true;
-                } else if (!this.inputMaxDate && this.inputMinDate && day.dateFormat >= this.inputMinDate) {
-                    condition = true;
-                } else if (this.inputMinDate && this.inputMaxDate && day.dateFormat >= this.inputMinDate && day.dateFormat <= this.inputMaxDate) {
-                    condition = true;
+                if (this.inputMaxYear && day.dateFormat > this.inputMaxYear) {
+                    return false;
+                }
+                if (this.inputMinYear && day.dateFormat < this.inputMinYear) {
+                    return false;
                 }
 
-                if (condition) {
-                    this.selectDay(day);
+                if (this.inputMinDate && day.dateFormat < this.inputMinDate) {
+                    return false;
                 }
+
+                if (this.inputMaxDate && day.dateFormat > this.inputMaxDate) {
+                    return false;
+                }
+
+                return true;
             },
 
             /**
@@ -1083,28 +1081,12 @@
                  */
                 this.yearsInPersian = [];
                 for (let i = (this.yearToShow - 7); i <= (this.yearToShow + 7); i++) {
-                    if (this.inputMaxYear || this.inputMinYear) {
-                        if (parseInt(this.yearInfo) + i > this.getPersianYear(this.inputMaxYear) || parseInt(this.yearInfo) + i < this.getPersianYear(this.inputMinYear)) {
-                            continue;
-                        }
-                    }
-
                     const generatedYear = parseInt(this.yearInfo) + i;
                     this.yearsInPersian.push({
                         title: generatedYear,
                         isSelected: false
                     });
                 }
-
-                // if (this.yearsInPersian.length === 0) {
-                //     for (let i = 0; i < 14; i++) {
-                //         const generatedYear = parseInt(this.getPersianYear(this.inputMaxYear)) - i;
-                //         this.yearsInPersian.push({
-                //             title: generatedYear,
-                //             isSelected: false
-                //         });
-                //     }
-                // }
 
                 /**
                  * Find and select year
@@ -1153,14 +1135,6 @@
              *
              */
             showYearGoUp () {
-                /**
-                 * check inputMinYear
-                 * @type {number}
-                 */
-                if (this.inputMinYear && this.yearsInPersian[0].title <= this.getPersianYear(this.inputMinYear)) {
-                    return;
-                }
-
                 this.yearToShow -= 6;
                 this.showYears(this.yearToShow);
             },
@@ -1173,11 +1147,6 @@
                  * check inputMaxYear
                  * @type {number}
                  */
-                const index = this.yearsInPersian.length - 1;
-                if (this.inputMaxYear && this.yearsInPersian[index].title >= this.getPersianYear(this.inputMaxYear)) {
-                    return;
-                }
-
                 this.yearToShow += 6;
                 this.showYears(this.yearToShow);
             },
@@ -1237,6 +1206,11 @@
     };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss"
+       scoped>
     @import "../assets/sass/components/_calendar.scss";
+
+    .btn {
+        height: 33px;
+    }
 </style>

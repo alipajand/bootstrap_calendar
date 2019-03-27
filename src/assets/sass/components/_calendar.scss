@@ -86,7 +86,7 @@
                 }
 
                 &.day-isSelected {
-                    font-size: 18px;
+                    font-size: 17px;
                     line-height: 1.1;
                     color: #fff !important;
                     background-color: $primary;
@@ -152,8 +152,6 @@
 
                 &.month-isSelected {
                     color: #fff;
-                    padding: 2px;
-                    font-size: 16px;
                     background-color: $primary;
                 }
             }
@@ -180,10 +178,14 @@
                     @include border-radius(0 0 0 $border-radius)
                 }
 
+                &.year-deactivate {
+                    color: $black !important;
+                    background-color: $white !important;
+                    @include opacity(0.2);
+                }
+
                 &.year-isSelected {
                     color: #fff;
-                    padding: 2px;
-                    font-size: 19px;
                     background-color: $primary;
                 }
             }
