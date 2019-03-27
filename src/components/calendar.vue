@@ -59,8 +59,7 @@
                 v-bind:ref="inputCalendarSelector"
                 v-if="flags.showCalendar && flags.initialCalendar">
             <div class="card-body p-2">
-                <div v-show="flags.showDates"
-                     class="card-in">
+                <div v-show="flags.showDates">
                     <b-row>
                         <b-col cols="2">
                             <b-button block
@@ -192,8 +191,7 @@
                         </b-col>
                     </b-row>
                 </div>
-                <div v-show="flags.showMonths"
-                     class="card-in">
+                <div v-show="flags.showMonths">
                     <b-row>
                         <b-col cols="12">
                             <div class="bg-gray text-white rounded text-center mb-2 py-2">
@@ -225,8 +223,7 @@
                         </b-col>
                     </b-row>
                 </div>
-                <div v-show="flags.showYears"
-                     class="card-in">
+                <div v-show="flags.showYears">
                     <b-row>
                         <b-col cols="12">
                             <div class="bg-gray text-white rounded text-center mb-2 py-2">
