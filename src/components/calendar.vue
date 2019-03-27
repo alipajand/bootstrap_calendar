@@ -10,19 +10,21 @@
                               readonly
                               autocomplete="off"
                               v-model="calendar.text"
-                              class="app-calendar-input bg-white"
+                              class="app-calendar-input bg-white rounded-0"
                               v-bind:horizontal="inputHorizontalView"
                               v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
                               v-on:click.native.prevent="toggleCalendar($event)">
                 </b-form-input>
                 <b-input-group-text slot="prepend"
+                                    class="radius-right"
                                     v-if="inputShowIcons">
-                    <i class="far fa-calendar-alt pointer app-calendar-icon"></i>
+                    <i class="far fa-calendar-alt app-calendar-icon"></i>
                 </b-input-group-text>
                 <b-input-group-text slot="append"
+                                    class="radius-left pointer"
                                     v-on:click="removeDate()"
                                     v-if="calendar.text && inputShowIcons && inputShowRemoveIcon">
-                    <i class="fa fa-times pointer app-calendar-icon"></i>
+                    <i class="fa fa-times app-calendar-icon"></i>
                 </b-input-group-text>
             </b-input-group>
         </b-form-group>
@@ -31,13 +33,14 @@
                           type="text"
                           autocomplete="off"
                           v-model="calendar.text"
-                          class="app-calendar-input bg-white"
+                          class="app-calendar-input bg-white radius-right"
                           v-bind:placeholder="inputShowPlaceholder ? placeholder : ''"
                           v-on:click.native.prevent="toggleCalendar($event)">
             </b-form-input>
             <b-input-group-text slot="append"
+                                class="radius-left pointer"
                                 v-on:click="removeDate()">
-                <i class="fa fa-times pointer app-calendar-icon"></i>
+                <i class="fa fa-times app-calendar-icon"></i>
             </b-input-group-text>
         </b-input-group>
         <b-form-input v-else
@@ -51,12 +54,13 @@
         </b-form-input>
 
         <b-card no-body
-                class="app-calendar shadow mb-3"
+                class="app-calendar shadow mb-3 fade-in-animation"
                 v-bind:id="inputCalendarSelector"
                 v-bind:ref="inputCalendarSelector"
                 v-if="flags.showCalendar && flags.initialCalendar">
             <div class="card-body p-2">
-                <div v-show="flags.showDates">
+                <div v-show="flags.showDates"
+                     class="fade-in-animation">
                     <b-row>
                         <b-col cols="2">
                             <b-button block
@@ -65,7 +69,7 @@
                                       class="bg-gray border-0 py-1 px-0 shadow-none text-white"
                                       v-bind:disabled="date <= inputMinYear"
                                       v-on:click="goToPreviousMonth()">
-                                <i class="fa fa-arrow-right pr-2 ml-1 app-calendar-icon"></i>
+                                <i class="fa fa-arrow-right pr-1 ml-1 app-calendar-icon"></i>
                             </b-button>
                         </b-col>
                         <b-col cols="4"
@@ -97,7 +101,7 @@
                                       class="bg-gray border-0 py-1 px-0 shadow-none text-white"
                                       v-bind:disabled="date >= inputMaxYear"
                                       v-on:click="goToNextMonth()">
-                                <i class="fa fa-arrow-left pl-2 mr-1 app-calendar-icon"></i>
+                                <i class="fa fa-arrow-left pl-1 mr-1 app-calendar-icon"></i>
                             </b-button>
                         </b-col>
                     </b-row>
@@ -110,8 +114,8 @@
                             </ul>
                             <ul class="list-unstyled show-days float-right p-0">
                                 <li v-for="(day, index) in dayArray"
-                                    v-bind:key="index"
                                     v-b-tooltip
+                                    v-bind:key="index"
                                     v-bind:title="day.isToday && inputHighlightToday ? 'امروز' : ''"
                                     v-bind:class="[
                                         day.isHoliday ? 'day-isHoliday text-danger' : '',
@@ -163,7 +167,7 @@
                     </b-row>
                     <b-row>
                         <template v-if="inputShowFooterButtons">
-                            <b-col>
+                            <b-col v-if="checkSelectable(today)">
                                 <b-button block
                                           variant="light"
                                           v-on:click="goToToday()">
@@ -188,7 +192,8 @@
                         </b-col>
                     </b-row>
                 </div>
-                <div v-show="flags.showMonths">
+                <div v-show="flags.showMonths"
+                     class="fade-in-animation">
                     <b-row>
                         <b-col cols="12">
                             <div class="bg-gray text-white rounded text-center mb-2 py-2">
@@ -210,7 +215,8 @@
                         </b-col>
                     </b-row>
                     <b-row v-if="inputShowFooterButtons">
-                        <b-col cols="12">
+                        <b-col cols="12"
+                               v-if="checkSelectable(today)">
                             <b-button block
                                       variant="light"
                                       v-on:click="goToToday()">
@@ -219,7 +225,8 @@
                         </b-col>
                     </b-row>
                 </div>
-                <div v-show="flags.showYears">
+                <div v-show="flags.showYears"
+                     class="fade-in-animation">
                     <b-row>
                         <b-col cols="12">
                             <div class="bg-gray text-white rounded text-center mb-2 py-2">
@@ -250,7 +257,7 @@
                                 <i class="fas fa-angle-up app-calendar-icon"></i>
                             </b-button>
                         </b-col>
-                        <b-col class="p-0" v-if="inputShowFooterButtons">
+                        <b-col class="p-0" v-if="inputShowFooterButtons && checkSelectable(today)">
                             <b-button block
                                       variant="light"
                                       v-on:click="goToToday()">
@@ -377,6 +384,7 @@
         data () {
             return {
                 date: new Date(),
+                today: new Date(),
                 dayArray: [],
                 yearToShow: 0,
                 yearInfo: null,
@@ -484,7 +492,7 @@
                  * Decide to fill input
                  */
                 if (this.inputSelectedDate) {
-                    this.date = new Date(this.inputSelectedDate.toString());
+                    this.date = this.convertToDate(this.inputSelectedDate.toString());
                     this.calendar.text = this.convertToPersianDate(this.date, 'combo');
                 } else {
                     this.calendar.text = '';
@@ -524,7 +532,7 @@
                 /**
                  * update date
                  */
-                const date = new Date(day.dateFormat);
+                const date = this.convertToDate(day.dateFormat);
                 this.date = date;
 
                 /**
@@ -547,18 +555,18 @@
              *
              */
             checkSelectable (day) {
-                if (this.inputMaxYear && day.dateFormat > this.inputMaxYear) {
+                if (this.inputMaxYear && ((day.dateFormat || day) > this.inputMaxYear)) {
                     return false;
                 }
-                if (this.inputMinYear && day.dateFormat < this.inputMinYear) {
-                    return false;
-                }
-
-                if (this.inputMinDate && day.dateFormat < this.inputMinDate) {
+                if (this.inputMinYear && ((day.dateFormat || day) < this.inputMinYear)) {
                     return false;
                 }
 
-                if (this.inputMaxDate && day.dateFormat > this.inputMaxDate) {
+                if (this.inputMinDate && ((day.dateFormat || day) < this.inputMinDate)) {
+                    return false;
+                }
+
+                if (this.inputMaxDate && ((day.dateFormat || day) > this.inputMaxDate)) {
                     return false;
                 }
 
@@ -569,7 +577,9 @@
              *
              */
             goToToday () {
-                this.selectDay({ dateFormat: new Date() });
+                if (this.checkSelectable(this.today)) {
+                    this.selectDay({ dateFormat: this.today });
+                }
             },
 
             /**
@@ -654,14 +664,14 @@
                     const column = 1;
                     const formula = ((row - 1) * 6) + column - 1;
                     const dataArray = this.dayArray[formula];
-                    const dateFormat = new Date(firstDayOfMonth);
+                    const dateFormat = this.convertToDate(firstDayOfMonth);
 
                     if (formula > 42 || counter > this.monthInfo.previousMonthAmount) {
                         break;
                     }
                     dataArray.isGrey = true;
                     dataArray.title = this.monthInfo.previousMonthAmount - persianWeekdayIndex + row + 1;
-                    dataArray.dateFormat = new Date(dateFormat.setDate(firstDayOfMonth.getDate() - persianWeekdayIndex + row));
+                    dataArray.dateFormat = this.convertToDate(dateFormat.setDate(firstDayOfMonth.getDate() - persianWeekdayIndex + row));
                 }
 
                 /**
@@ -671,14 +681,14 @@
                     const column = 1;
                     const formula = ((row - 1) * 6) + column - 1;
                     const dataArray = this.dayArray[formula];
-                    const dateFormat = new Date(firstDayOfMonth);
+                    const dateFormat = this.convertToDate(firstDayOfMonth);
 
                     if (formula > 42 || counter > this.monthInfo.days) {
                         break;
                     }
 
                     dataArray.title = counter;
-                    dataArray.dateFormat = new Date(dateFormat.setDate(firstDayOfMonth.getDate() + counter - 1));
+                    dataArray.dateFormat = this.convertToDate(dateFormat.setDate(firstDayOfMonth.getDate() + counter - 1));
 
                     if (row === 7) {
                         dataArray.isHoliday = true;
@@ -699,26 +709,26 @@
                     for (let row = 1; row <= 7; row++) {
                         const formula = ((row - 1) * 6) + column - 1;
                         const dataArray = this.dayArray[formula];
-                        const dateFormat = new Date(firstDayOfMonth);
+                        const dateFormat = this.convertToDate(firstDayOfMonth);
 
                         if (formula > 42) {
                             break;
                         }
                         if (counter > this.monthInfo.days) {
-                            const nexMonthDateFormat = new Date(firstDayOfMonth);
+                            const nexMonthDateFormat = this.convertToDate(firstDayOfMonth);
                             if (row === 7) {
                                 dataArray.isHoliday = true;
                             }
                             dataArray.title = nextMonthCounter;
                             dataArray.isGrey = true;
-                            dataArray.dateFormat = new Date(nexMonthDateFormat.setDate(firstDayOfMonth.getDate() + nextMonthCounter + this.monthInfo.days - 1));
+                            dataArray.dateFormat = this.convertToDate(nexMonthDateFormat.setDate(firstDayOfMonth.getDate() + nextMonthCounter + this.monthInfo.days - 1));
 
                             nextMonthCounter++;
                             continue;
                         }
 
                         dataArray.title = counter;
-                        dataArray.dateFormat = new Date(dateFormat.setDate(firstDayOfMonth.getDate() + counter - 1));
+                        dataArray.dateFormat = this.convertToDate(dateFormat.setDate(firstDayOfMonth.getDate() + counter - 1));
 
                         if (row === 7) {
                             dataArray.isHoliday = true;
@@ -806,7 +816,7 @@
              *
              */
             getFirstDayOfMonth (date) {
-                const firstDay = new Date(date);
+                const firstDay = this.convertToDate(date);
                 const pastDays = parseInt(this.getPersianDay(date));
                 firstDay.setDate(firstDay.getDate() - pastDays + 1);
 
@@ -820,14 +830,14 @@
                 let pastDays = 0;
 
                 date = this.getFirstDayOfMonth(date);
-                const getMonth = this.getPersianMonth(new Date(date), '2-digit');
+                const getMonth = this.getPersianMonth(this.convertToDate(date), '2-digit');
                 const getMonthIndex = parseInt(this.convertToEnglishDigit(getMonth)) - 1;
 
                 for (let index = 0; index < getMonthIndex; index++) {
                     pastDays += parseInt(this.monthsInPersian[index].days);
                 }
 
-                return new Date(date.setDate(date.getDate() - pastDays));
+                return this.convertToDate(date.setDate(date.getDate() - pastDays));
             },
 
             /**
@@ -988,6 +998,17 @@
             },
 
             /**
+             *
+             */
+            convertToDate (input) {
+                const date = new Date(input);
+                date.toDateString();
+                date.toGMTString();
+
+                return date;
+            },
+
+            /**
              * Selecting a month and a year together
              */
             showMonths (firstDayOfMonth) {
@@ -1025,10 +1046,11 @@
                  * Calculate days after changing year
                  */
                 firstDayOfMonth = this.monthInfo.firstDayOfMonth;
-                firstDayOfYear = new Date(this.getFirstDayOfYear(firstDayOfMonth));
+                firstDayOfYear = this.convertToDate(this.getFirstDayOfYear(firstDayOfMonth));
+
                 if (this.yearInfo !== parseInt(this.getPersianYear(firstDayOfYear))) {
                     differenceYear = this.yearInfo - parseInt(this.getPersianYear(firstDayOfYear));
-                    this.date = new Date(firstDayOfYear.setFullYear(firstDayOfYear.getFullYear() + differenceYear));
+                    this.date = this.convertToDate(firstDayOfYear.setFullYear(firstDayOfYear.getFullYear() + differenceYear));
                     this.yearInfo = parseInt(this.getPersianYear(this.date));
                 }
 
@@ -1036,7 +1058,7 @@
                  * Find and select month
                  */
                 this.monthsInPersian.forEach(item => {
-                    item.firstDay = new Date(firstDayOfYear.setDate(firstDayOfYear.getDate() + increasingDay));
+                    item.firstDay = this.convertToDate(firstDayOfYear.setDate(firstDayOfYear.getDate() + increasingDay));
                     increasingDay = item.days;
                 });
 
@@ -1056,7 +1078,7 @@
                 /**
                  * Update date and month
                  */
-                this.date = new Date(firstDayOfMonth);
+                this.date = this.convertToDate(firstDayOfMonth);
                 this.monthInfo = this.fillMonthInfo(this.date);
 
                 /**
@@ -1081,6 +1103,12 @@
                  */
                 this.yearsInPersian = [];
                 for (let i = (this.yearToShow - 7); i <= (this.yearToShow + 7); i++) {
+                    if (this.inputMaxYear || this.inputMinYear) {
+                        if (parseInt(this.yearInfo) + i > this.getPersianYear(this.inputMaxYear) || parseInt(this.yearInfo) + i < this.getPersianYear(this.inputMinYear)) {
+                            continue;
+                        }
+                    }
+
                     const generatedYear = parseInt(this.yearInfo) + i;
                     this.yearsInPersian.push({
                         title: generatedYear,
@@ -1135,6 +1163,14 @@
              *
              */
             showYearGoUp () {
+                /**
+                 * check inputMinYear
+                 * @type {number}
+                 */
+                if (this.inputMinYear && this.yearsInPersian[0].title <= this.getPersianYear(this.inputMinYear)) {
+                    return;
+                }
+
                 this.yearToShow -= 6;
                 this.showYears(this.yearToShow);
             },
@@ -1147,6 +1183,11 @@
                  * check inputMaxYear
                  * @type {number}
                  */
+                const index = this.yearsInPersian.length - 1;
+                if (this.inputMaxYear && this.yearsInPersian[index].title >= this.getPersianYear(this.inputMaxYear)) {
+                    return;
+                }
+
                 this.yearToShow += 6;
                 this.showYears(this.yearToShow);
             },
@@ -1157,7 +1198,7 @@
             changeHour () {
                 const selectedDate = this.inputSelectedDate;
                 const newHour = this.convertToEnglishDigit(this.calendar.hour);
-                const date = new Date(selectedDate.setHours(newHour));
+                const date = this.convertToDate(selectedDate.setHours(newHour));
                 this.monthInfo = this.fillMonthInfo(date);
 
                 /**
@@ -1183,7 +1224,7 @@
             changeMinute () {
                 const selectedDate = this.inputSelectedDate;
                 const newMinute = this.convertToEnglishDigit(this.calendar.minute);
-                const date = new Date(selectedDate.setMinutes(newMinute));
+                const date = this.convertToDate(selectedDate.setMinutes(newMinute));
                 this.monthInfo = this.fillMonthInfo(date);
 
                 /**

@@ -5,11 +5,17 @@ import App from './App';
 import router from './router';
 
 import BootstrapVue from 'bootstrap-vue'; // https://github.com/bootstrap-vue/bootstrap-vue
+import PersianCalendar from './index'; // https://github.com/bootstrap-vue/bootstrap-vue
 
 /**
  * Bootstrap vue
  */
 Vue.use(BootstrapVue);
+
+/**
+ * Calendar
+ */
+Vue.use(PersianCalendar);
 
 Vue.config.performance = false;
 Vue.config.productionTip = false;

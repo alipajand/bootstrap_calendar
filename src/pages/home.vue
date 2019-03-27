@@ -1,6 +1,6 @@
 <template>
     <b-container>
-        <b-row class="justify-content-center m-5">
+        <b-row class="justify-content-center my-5">
             <b-col lg="6" md="8" sm="10" cols="12">
                 <h1>
                     تقویم شمسی
@@ -9,7 +9,7 @@
                 <calendar-component class="mt-5"
                                     v-bind:input-show-time="false"
                                     v-bind:input-title="'انتخاب تاریخ'"
-                                    v-bind:input-primary-color="'#529b78'"
+                                    v-bind:input-primary-color="'#439687'"
                                     v-bind:input-max-year="maxYear"
                                     v-bind:input-min-year="minYear"
                                     v-bind:input-selected-date="calendar.selected"
@@ -21,8 +21,6 @@
 </template>
 
 <script>
-    import CalendarComponent from '../components/calendar';
-
     export default {
         data () {
             return {
@@ -40,9 +38,6 @@
                 const minYearDate = new Date();
                 return new Date(minYearDate.setFullYear(minYearDate.getFullYear() - 80));
             }
-        },
-        components: {
-            CalendarComponent
         }
     };
 </script>
