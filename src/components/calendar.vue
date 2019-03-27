@@ -16,12 +16,12 @@
                               v-on:click.native.prevent="toggleCalendar($event)">
                 </b-form-input>
                 <b-input-group-text slot="prepend"
-                                    class="radius-right"
+                                    class="large px-2 py-1 radius-right"
                                     v-if="inputShowIcons">
                     <i class="far fa-calendar-alt app-calendar-icon"></i>
                 </b-input-group-text>
                 <b-input-group-text slot="append"
-                                    class="radius-left pointer"
+                                    class="large px-2 py-1 radius-left pointer"
                                     v-on:click="removeDate()"
                                     v-if="calendar.text && inputShowIcons && inputShowRemoveIcon">
                     <i class="fa fa-times app-calendar-icon"></i>
@@ -38,7 +38,7 @@
                           v-on:click.native.prevent="toggleCalendar($event)">
             </b-form-input>
             <b-input-group-text slot="append"
-                                class="radius-left pointer"
+                                class="large px-2 py-1 radius-left pointer"
                                 v-on:click="removeDate()">
                 <i class="fa fa-times app-calendar-icon"></i>
             </b-input-group-text>
