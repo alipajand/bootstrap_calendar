@@ -15,12 +15,10 @@
                                     v-bind:input-selected-date="calendar.selected"
                                     v-on:changeDate="calendar.selected = $event">
                 </calendar-component>
-                <div class="ltr text-left latin">
-                    <div class="text-black-50">
-                        maxYear: {{maxYear | persianDate}}
-                        <span class="mx-3">|</span>
-                        minYear: {{minYear | persianDate}}
-                    </div>
+                <div class="text-black-50">
+                    maxYear: {{maxYear | persianDate}}
+                    <br>
+                    minYear: {{minYear | persianDate}}
                 </div>
             </b-col>
         </b-row>
