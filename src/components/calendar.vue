@@ -173,7 +173,7 @@
                                     امروز
                                 </b-button>
                             </b-col>
-                            <b-col class="p-0">
+                            <b-col v-bind:class="checkSelectable(today) ? 'p-0' : ''">
                                 <b-button block
                                           variant="light"
                                           v-on:click="goToCurrentMonth()">
@@ -254,7 +254,8 @@
                                 <i class="fas fa-angle-up app-calendar-icon"></i>
                             </b-button>
                         </b-col>
-                        <b-col class="p-0" v-if="inputShowFooterButtons && checkSelectable(today)">
+                        <b-col class="p-0"
+                               v-if="inputShowFooterButtons && checkSelectable(today)">
                             <b-button block
                                       variant="light"
                                       v-on:click="goToToday()">

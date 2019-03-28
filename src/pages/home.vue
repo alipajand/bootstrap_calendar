@@ -15,6 +15,13 @@
                                     v-bind:input-selected-date="calendar.selected"
                                     v-on:changeDate="calendar.selected = $event">
                 </calendar-component>
+                <div class="ltr text-left latin">
+                    <div class="text-black-50">
+                        maxYear: {{maxYear | persianDate}}
+                        <span class="mx-3">|</span>
+                        minYear: {{minYear | persianDate}}
+                    </div>
+                </div>
             </b-col>
         </b-row>
     </b-container>
@@ -30,11 +37,11 @@
             };
         },
         computed: {
-            maxYear: function () {
+            maxYear: function() {
                 const maxYearDate = new Date();
                 return new Date(maxYearDate.setFullYear(maxYearDate.getFullYear() - 15));
             },
-            minYear: function () {
+            minYear: function() {
                 const minYearDate = new Date();
                 return new Date(minYearDate.setFullYear(minYearDate.getFullYear() - 80));
             }

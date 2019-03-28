@@ -8,6 +8,11 @@ import BootstrapVue from 'bootstrap-vue'; // https://github.com/bootstrap-vue/bo
 import PersianCalendar from './index'; // https://github.com/bootstrap-vue/bootstrap-vue
 
 /**
+ * Custom filters
+ */
+import './filters';
+
+/**
  * Bootstrap vue
  */
 Vue.use(BootstrapVue);
