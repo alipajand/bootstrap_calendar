@@ -76,19 +76,19 @@
                 &.day-isGrey {
                     &, &.day-isHoliday {
                         color: #aaa;
-                        background-color: #f4f4f4;
+                        background-color: #f1f1f1;
                     }
                 }
 
                 &.day-isToday {
                     color: #333;
-                    background-color: #fff2be;
+                    background-color: #f8e493;
                 }
 
                 &.day-isSelected {
                     font-size: 17px;
                     line-height: 1.1;
-                    color: #fff !important;
+                    color: $white !important;
                     background-color: $primary;
                 }
 
@@ -151,7 +151,7 @@
                 }
 
                 &.month-isSelected {
-                    color: #fff;
+                    color: $white;
                     background-color: $primary;
                 }
             }
@@ -185,7 +185,7 @@
                 }
 
                 &.year-isSelected {
-                    color: #fff;
+                    color: $white;
                     background-color: $primary;
                 }
             }
