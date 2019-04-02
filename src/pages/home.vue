@@ -7,18 +7,23 @@
                 </h1>
                 <hr>
                 <calendar-component class="mt-5"
-                                    v-bind:input-show-time="false"
                                     v-bind:input-title="'انتخاب تاریخ'"
-                                    v-bind:input-primary-color="'#439687'"
+                                    v-bind:time-zone="'Asia/Tehran'"
+                                    v-bind:input-selected-date="calendar.selected"
+                                    v-on:changeDate="calendar.selected = $event">
+                </calendar-component>
+                <hr class="my-5">
+                <calendar-component v-bind:input-show-time="false"
+                                    v-bind:input-title="'انتخاب تاریخ'"
                                     v-bind:input-max-year="maxYear"
                                     v-bind:input-min-year="minYear"
                                     v-bind:input-selected-date="calendar.selected"
                                     v-on:changeDate="calendar.selected = $event">
                 </calendar-component>
                 <div class="text-black-50">
-                    maxYear: {{maxYear | persianDate}}
+                    تاریخ ماکزیمم سال: {{maxYear | persianDate}}
                     <br>
-                    minYear: {{minYear | persianDate}}
+                    تاریخ مینیمم سال: {{minYear | persianDate}}
                 </div>
             </b-col>
         </b-row>
