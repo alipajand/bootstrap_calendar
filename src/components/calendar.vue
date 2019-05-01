@@ -497,6 +497,8 @@
                         newDate.setFullYear(newDate.getFullYear() - abs);
 
                         this.date = this.getFirstDayOfYear(newDate);
+                    } else if (this.inputMaxDate) {
+                        this.date = this.inputMaxDate;
                     }
                 }
 
@@ -630,11 +632,7 @@
                 let counter = 1;
 
                 if (!date) {
-                    if (!this.date) {
-                        date = new Date();
-                    } else {
-                        date = this.date;
-                    }
+                    date = this.date ? this.date : new Date();
                 }
 
                 /**

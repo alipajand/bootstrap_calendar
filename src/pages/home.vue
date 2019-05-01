@@ -6,6 +6,18 @@
                     تقویم شمسی
                 </h1>
                 <hr>
+                <calendar-component v-bind:input-show-title="false"
+                                    v-bind:input-min-year="minYear"
+                                    v-bind:input-max-year="maxYear"
+                                    v-bind:time-zone="'Asia/Tehran'"
+                                    v-bind:input-title="'تاریخ تولد'"
+                                    v-bind:input-primary-color="'#E84691'"
+                                    v-bind:input-show-footer-buttons="false"
+                                    v-bind:input-selected-date="calendar.selected"
+                                    v-bind:input-placeholder="'تاریخ تولد خود را وارد نمایید'"
+                                    v-on:changeDate="calendar.selected = $event">
+                </calendar-component>
+                <hr class="my-5">
                 <calendar-component class="mt-5"
                                     v-bind:input-title="'انتخاب تاریخ'"
                                     v-bind:time-zone="'Asia/Tehran'"
@@ -32,7 +44,7 @@
 
 <script>
     export default {
-        data () {
+        data() {
             return {
                 calendar: {
                     selected: null
