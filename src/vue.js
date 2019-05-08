@@ -20,9 +20,7 @@ Vue.use(BootstrapVue);
 /**
  * Calendar
  */
-Vue.use(PersianCalendar, {
-    primaryColor: '#439687'
-});
+Vue.use(PersianCalendar);
 
 Vue.config.performance = false;
 Vue.config.productionTip = false;

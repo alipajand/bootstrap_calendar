@@ -76,7 +76,7 @@
                             <b-button block
                                       size="lg"
                                       variant="primary"
-                                      v-bind:style="{ backgroundColor: $primaryColor || inputPrimaryColor}"
+                                      v-bind:style="{ backgroundColor: inputPrimaryColor}"
                                       class="rounded-0 border-0 py-1 shadow-none radius-right"
                                       v-on:click="showMonths(monthInfo.firstDayOfMonth)">
                                 {{monthInfo.title}}
@@ -87,7 +87,7 @@
                             <b-button block
                                       size="lg"
                                       variant="primary"
-                                      v-bind:style="{ backgroundColor: $primaryColor || inputPrimaryColor}"
+                                      v-bind:style="{ backgroundColor: inputPrimaryColor}"
                                       class="rounded-0 border-0 py-1 shadow-none radius-left"
                                       v-on:click="showYears()">
                                 {{yearInfo}}
@@ -126,7 +126,7 @@
                                         day.isGrey && !inputShowNextMonth ? 'hide-other-month' : '',
                                         day.isGrey ? 'day-isGrey' : '',
                                         day.isSelected ? 'day-isSelected' : '']"
-                                    v-bind:style="{ backgroundColor: day.isSelected ? $primaryColor || inputPrimaryColor : ''}"
+                                    v-bind:style="{ backgroundColor: day.isSelected ? inputPrimaryColor : ''}"
                                     v-on:click="checkSelectable(day) ? selectDay(day) : ''">
                                     {{day.title}}
                                 </li>
@@ -205,7 +205,7 @@
                                 <li v-for="(month, index) in monthsInPersian"
                                     v-bind:key="index"
                                     v-on:click="selectMonth(month.firstDay)"
-                                    v-bind:style="{ backgroundColor: month.isSelected ? $primaryColor || inputPrimaryColor : ''}"
+                                    v-bind:style="{ backgroundColor: month.isSelected ? inputPrimaryColor : ''}"
                                     v-bind:class="month.isSelected ? 'month-isSelected' : ''">
                                     {{month.title}}
                                 </li>
@@ -238,7 +238,7 @@
                                     <li v-if="year.title"
                                         v-bind:key="index"
                                         v-on:click="selectYear(year.title)"
-                                        v-bind:style="{backgroundColor: year.isSelected ? $primaryColor || inputPrimaryColor : ''}"
+                                        v-bind:style="{backgroundColor: year.isSelected ? inputPrimaryColor : ''}"
                                         v-bind:class="year.isSelected ? 'year-isSelected' : ''">
                                         {{year.title}}
                                     </li>
