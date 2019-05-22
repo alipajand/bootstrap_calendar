@@ -291,7 +291,7 @@ input[type=number],
         &:hover {
             color: $primary;
             background-color: transparent;
-            @include box-shadow-mix(inset 0 -2px 0 $primary);
+            @include box-shadow(inset 0 -2px 0 $primary);
         }
     }
 
@@ -299,7 +299,7 @@ input[type=number],
     .nav-link.active:focus {
         border: none;
         color: $primary;
-        @include box-shadow-mix(inset 0 -2px 0 $primary);
+        @include box-shadow(inset 0 -2px 0 $primary);
 
         &:hover {
             border: none;
@@ -308,7 +308,7 @@ input[type=number],
     }
 
     .nav-link.disabled {
-        @include box-shadow-mix(inset 0 -1px 0 #ddd)
+        @include box-shadow(inset 0 -1px 0 #ddd)
     }
 
     &.nav-justified {
@@ -329,7 +329,7 @@ input[type=number],
 
 .dropdown-menu {
     margin-top: 1px;
-    @include box-shadow-mix($box-shadow);
+    @include box-shadow($box-shadow);
 
     .dropdown-item {
         text-align: $right;
