@@ -1,11 +1,11 @@
 <template>
-    <div id="app">
-        <router-view/>
-    </div>
+  <div id="app" class="rtl">
+    <router-view/>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'App'
-    };
+  export default {
+    name: 'App'
+  };
 </script>
