@@ -14,8 +14,9 @@ yarn run serve
 ```
 import Vue from 'vue';
 
-import CalendarComponent from '../index';
 import 'persian-calendar/src/styles/index.scss';
+
+import CalendarComponent from 'persian-calendar';
 Vue.use(CalendarComponent);
 ```
 

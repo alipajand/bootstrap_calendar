@@ -422,41 +422,44 @@
           showYears: false,
           showMonths: false,
           initialCalendar: false,
-          showCalendar: false
+          showCalendar: false,
+          clickOut: false
         }
       };
     },
     watch: {
-      'inputSelectedDate': function() {
+      'inputSelectedDate': function () {
         this.fillData();
       }
     },
     mounted() {
       this.fillData();
-
-      /**
-       * toggle calendar
-       */
-      $(window, 'body').on('click', e => {
-        this.hideCalendar(e);
-      });
     },
     methods: {
-      /**
-       * toggle class
-       */
-      hideCalendar(e) {
-        const elements = e.target;
-        const reference = this.$refs[this.inputCalendarSelector];
-        if (reference && this.flags.showCalendar) {
-          if (!(reference.contains(elements)) && !$(elements).hasClass('app-calendar-input')) {
-            this.flags.showCalendar = false;
-          }
-        }
-      },
       toggleCalendar(e) {
         e.preventDefault();
         this.flags.showCalendar = !this.flags.showCalendar;
+        this.flags.clickOut = false;
+
+        if (this.flags.showCalendar) {
+          document.addEventListener('click', this.outsideClickListener);
+        } else {
+          document.removeEventListener('click', this.outsideClickListener);
+        }
+      },
+      outsideClickListener(event) {
+        if (this.clickOutside(event) && this.flags.clickOut) {
+          this.flags.showCalendar = false;
+          this.flags.clickOut = false;
+          return;
+        }
+
+        this.flags.clickOut = true;
+      },
+      clickOutside(event) {
+        const reference = this.$refs[String(this.inputCalendarSelector)];
+        const condition = reference && reference.contains(event.target);
+        return !Boolean(condition);
       },
 
       /**
