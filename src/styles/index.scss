@@ -1,0 +1,211 @@
+@import '../../node_modules/bootstrap/scss/functions';
+@import '../../node_modules/bootstrap/scss/mixins';
+@import './variables';
+@import './mixins';
+
+.app-calendar-row {
+  .pointer {
+    cursor: pointer;
+  }
+
+  .app-calendar-input {
+    &, &[readonly] {
+      cursor: pointer;
+      @include user-select(none);
+    }
+  }
+
+  .app-calendar-row-title-bar {
+    .app-calendar {
+      margin-top: - $form-group-margin-bottom + 0.2rem;
+    }
+  }
+
+  .app-calendar {
+    #{$right}: 0;
+    height: auto;
+    width: 100%;
+    margin-top: 0.2rem;
+    position: absolute;
+    max-width: $calendar-width;
+    z-index: $zindex-dropdown;
+    @include border-radius(5px);
+
+    .bg-gray {
+      background-color: #333;
+    }
+
+    .app-calendar-icon {
+      bottom: -2px;
+      position: relative;
+    }
+
+    .app-calendar-time-separator {
+      left: 0;
+      right: 0;
+      top: 8px;
+      width: 1px;
+      margin: auto;
+    }
+
+    ul {
+      margin: 0;
+
+      li {
+        height: 30px;
+        float: $right;
+        padding: 5px 0;
+        text-align: center;
+        border: 1px solid #ddd;
+        margin: -1px -1px 0 0;
+        @include user-select(none)
+      }
+
+      &.show-days {
+        width: 77%;
+        float: $right;
+
+        li {
+          cursor: pointer;
+          width: calc(16.6666% + 1px);
+          @include transition(all 0.4s ease);
+
+          &.day-isHoliday {
+            color: $danger;
+          }
+
+          &.day-isGrey {
+            &, &.day-isHoliday {
+              color: #aaa;
+              background-color: #f1f1f1;
+            }
+          }
+
+          &.day-isToday {
+            color: #333;
+            background-color: #f8e493;
+          }
+
+          &.day-isSelected {
+            font-size: 17px;
+            line-height: 1.1;
+            color: $white !important;
+            background-color: $primary;
+          }
+
+          &.day-deactivate {
+            color: $black !important;
+            background-color: $white !important;
+            @include opacity(0.2);
+          }
+
+          &:nth-child(6) {
+            @include border-radius($border-radius 0 0 0)
+          }
+
+          &:nth-child(42) {
+            color: $danger;
+            @include border-radius(0 0 0 $border-radius)
+          }
+        }
+      }
+
+      &.show-weekdays {
+        width: 23%;
+
+        li {
+          width: 100%;
+          border-#{$left}: none;
+
+          &:nth-child(1) {
+            @include border-radius(0 $border-radius 0 0)
+          }
+
+          &:nth-child(7) {
+            color: $danger;
+            @include border-radius(0 0 $border-radius 0)
+          }
+        }
+      }
+
+      &.show-months {
+        width: 100%;
+
+        li {
+          width: calc(33.33333% + 1px);
+          cursor: pointer;
+
+          &:nth-child(1) {
+            @include border-radius(0 $border-radius 0 0)
+          }
+
+          &:nth-child(3) {
+            @include border-radius($border-radius 0 0 0)
+          }
+
+          &:nth-child(10) {
+            @include border-radius(0 0 $border-radius 0)
+          }
+
+          &:nth-child(12) {
+            @include border-radius(0 0 0 $border-radius)
+          }
+
+          &.month-isSelected {
+            color: $white;
+            background-color: $primary;
+          }
+        }
+      }
+
+      &.show-year {
+        li {
+          width: calc(33.33333% + 1px);
+          cursor: pointer;
+
+          &:nth-child(1) {
+            @include border-radius(0 $border-radius 0 0)
+          }
+
+          &:nth-child(3) {
+            @include border-radius($border-radius 0 0 0)
+          }
+
+          &:nth-child(13) {
+            @include border-radius(0 0 $border-radius 0)
+          }
+
+          &:nth-child(15) {
+            @include border-radius(0 0 0 $border-radius)
+          }
+
+          &.year-deactivate {
+            color: $black !important;
+            background-color: $white !important;
+            @include opacity(0.2);
+          }
+
+          &.year-isSelected {
+            color: $white;
+            background-color: $primary;
+          }
+        }
+      }
+    }
+  }
+
+  .rtl {
+    .radius-right {
+      @include border-radius(0 $border-radius $border-radius 0 !important);
+    }
+
+    .radius-left {
+      @include border-radius($border-radius 0 0 $border-radius !important);
+    }
+  }
+
+  .btn {
+    height: 33px;
+    padding: 0;
+  }
+}

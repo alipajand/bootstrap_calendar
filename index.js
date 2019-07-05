@@ -1,7 +1,13 @@
+import { version } from './package.json';
 import CalendarComponent from './src/components/calendar';
 
 export default {
-    install(Vue, options) {
-        Vue.component('CalendarComponent', CalendarComponent);
-    }
+  install(Vue) {
+    Vue.component(CalendarComponent.name, CalendarComponent);
+  },
+  version
+};
+
+export {
+  CalendarComponent
 };

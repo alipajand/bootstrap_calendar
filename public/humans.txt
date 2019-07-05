@@ -4,3 +4,4 @@
 /* TEAM */
     Developer: Ali Pajand
     linkedin: @alipajand
+    twitter: @alipajand

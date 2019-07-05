@@ -468,10 +468,6 @@
         this.flags.showMonths = false;
         this.flags.showCalendar = false;
       },
-
-      /**
-       *
-       */
       fillData() {
         /**
          * Decide to fill input
@@ -501,25 +497,13 @@
             this.date = this.inputMaxDate;
           }
         }
-
-        /**
-         *
-         */
         this.createCalendar();
         this.checkLeapYear();
       },
-
-      /**
-       *
-       */
       removeDate() {
         this.calendar.text = '';
         this.$emit('changeDate', null);
       },
-
-      /**
-       *
-       */
       selectDay(day) {
         /**
          * reset all selected highlights
@@ -554,10 +538,6 @@
          */
         this.closeCalendar();
       },
-
-      /**
-       *
-       */
       checkSelectable(day) {
         if (this.inputMaxYear && ((day.dateFormat || day) > this.inputMaxYear)) {
           return false;
@@ -572,19 +552,11 @@
 
         return !(this.inputMaxDate && ((day.dateFormat || day) > this.inputMaxDate));
       },
-
-      /**
-       *
-       */
       goToToday() {
         if (this.checkSelectable(this.today)) {
           this.selectDay({ dateFormat: this.today });
         }
       },
-
-      /**
-       *
-       */
       goToNextMonth() {
         this.checkLeapYear();
         this.date.setDate(this.date.getDate() + Number(this.monthInfo.days));
@@ -594,10 +566,6 @@
          */
         this.createCalendar();
       },
-
-      /**
-       *
-       */
       goToCurrentMonth() {
         this.date = new Date();
         this.checkLeapYear();
@@ -608,10 +576,6 @@
          */
         this.createCalendar();
       },
-
-      /**
-       *
-       */
       goToPreviousMonth() {
         this.checkLeapYear();
         this.date.setDate(this.date.getDate() - Number(this.monthInfo.previousMonthAmount));
@@ -621,10 +585,6 @@
          */
         this.createCalendar();
       },
-
-      /**
-       *
-       */
       createCalendar(date) {
         let firstDayOfMonth;
         let persianWeekday;
@@ -742,19 +702,11 @@
 
         this.flags.initialCalendar = true;
       },
-
-      /**
-       *
-       */
       updateModel(date) {
         this.calendar.hour = this.getHour(date);
         this.calendar.minute = this.getMinute(date);
         this.calendar.text = this.convertToPersianDate(date, 'combo');
       },
-
-      /**
-       *
-       */
       checkLeapYear() {
         const date = this.date;
         if (this.isLeapYear(this.getPersianYear(date))) {
@@ -763,10 +715,6 @@
           this.monthsInPersian[11].days = 29;
         }
       },
-
-      /**
-       *
-       */
       isCounterSelected(counter) {
         if (!this.inputSelectedDate) {
           return false;
@@ -779,10 +727,6 @@
 
         return (counter === dateDay && this.monthInfo.title === dateMonth && this.yearInfo === dateYear);
       },
-
-      /**
-       *
-       */
       isCounterTodayDate(counter) {
         const dateDay = this.getPersianDay(new Date());
         const dateMonth = this.getPersianMonth(new Date());
@@ -791,10 +735,6 @@
 
         return (counter === dateDay && this.monthInfo.title === dateMonth && this.yearInfo === dateYear);
       },
-
-      /**
-       *
-       */
       resetData() {
         this.dayArray = [];
         for (let i = 0; i < 42; i++) {
@@ -808,10 +748,6 @@
           });
         }
       },
-
-      /**
-       *
-       */
       getFirstDayOfMonth(date) {
         const firstDay = this.convertToDate(date);
         const pastDays = Number(this.getPersianDay(date));
@@ -819,10 +755,6 @@
 
         return firstDay;
       },
-
-      /**
-       *
-       */
       getFirstDayOfYear(date) {
         let pastDays = 0;
 
@@ -836,10 +768,6 @@
 
         return this.convertToDate(date.setDate(date.getDate() - pastDays));
       },
-
-      /**
-       *
-       */
       fillMonthInfo(date) {
         let persianDate,
           monthIndex,
@@ -882,49 +810,25 @@
           firstDayOfMonth: date
         };
       },
-
-      /**
-       *
-       */
       isLeapYear(year) {
         return ((((((year - ((year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
       },
-
-      /**
-       *
-       */
       getPersianDay(date, opt) {
         const options = { day: opt || 'numeric', timeZone: this.timeZone };
         return this.convertToEnglishDigit(date.toLocaleDateString('fa-persian', options));
       },
-
-      /**
-       *
-       */
       getPersianWeekday(date, opt) {
         const options = { weekday: opt || 'long', timeZone: this.timeZone };
         return date.toLocaleDateString('fa-persian', options);
       },
-
-      /**
-       *
-       */
       getPersianMonth(date, opt) {
         const options = { month: opt || 'long', timeZone: this.timeZone };
         return date.toLocaleDateString('fa-persian', options);
       },
-
-      /**
-       *
-       */
       getPersianYear(date, opt) {
         const options = { year: opt || 'numeric', timeZone: this.timeZone };
         return this.convertToEnglishDigit(date.toLocaleDateString('fa-persian', options));
       },
-
-      /**
-       *
-       */
       getHour(date) {
         const options = { hour: '2-digit', timeZone: this.timeZone };
         const output = date.toLocaleString('fa-persian', options);
@@ -933,10 +837,6 @@
         }
         return output;
       },
-
-      /**
-       *
-       */
       getMinute(date) {
         const options = { minute: '2-digit', timeZone: this.timeZone };
         const output = date.toLocaleString('fa-persian', options);
@@ -945,10 +845,6 @@
         }
         return output;
       },
-
-      /**
-       *
-       */
       convertToPersianDate(date, type) {
         if (!date) {
           return;
@@ -981,10 +877,6 @@
         }
         return `${year}/${month}/${day}`;
       },
-
-      /**
-       *
-       */
       convertToEnglishDigit(string) {
         return string.replace(/[\u0660-\u0669]/g, (c) => {
           return c.charCodeAt(0) - 0x0660;
@@ -992,10 +884,6 @@
           return c.charCodeAt(0) - 0x06f0;
         });
       },
-
-      /**
-       *
-       */
       convertToDate(input) {
         const date = new Date(input);
         date.toDateString();
@@ -1242,214 +1130,3 @@
     }
   };
 </script>
-
-<style lang="scss" scoped>
-  @import "../styles/dependencies";
-
-  .app-calendar-row {
-    .pointer {
-      cursor: pointer;
-    }
-
-    .app-calendar-input {
-      &, &[readonly] {
-        cursor: pointer;
-        @include user-select(none);
-      }
-    }
-
-    .app-calendar-row-title-bar {
-      .app-calendar {
-        margin-top: - $form-group-margin-bottom + 0.2rem;
-      }
-    }
-
-    .app-calendar {
-      #{$right}: 0;
-      height: auto;
-      width: 100%;
-      margin-top: 0.2rem;
-      position: absolute;
-      max-width: $calendar-width;
-      z-index: $zindex-dropdown;
-      @include border-radius(5px);
-
-      .bg-gray {
-        background-color: #333;
-      }
-
-      .app-calendar-icon {
-        bottom: -2px;
-        position: relative;
-      }
-
-      .app-calendar-time-separator {
-        left: 0;
-        right: 0;
-        top: 8px;
-        width: 1px;
-        margin: auto;
-      }
-
-      ul {
-        margin: 0;
-
-        li {
-          height: 30px;
-          float: $right;
-          padding: 5px 0;
-          text-align: center;
-          border: 1px solid #ddd;
-          margin: -1px -1px 0 0;
-          @include user-select(none)
-        }
-
-        &.show-days {
-          width: 77%;
-          float: $right;
-
-          li {
-            cursor: pointer;
-            width: calc(16.6666% + 1px);
-            @include transition(all 0.4s ease);
-
-            &.day-isHoliday {
-              color: $danger;
-            }
-
-            &.day-isGrey {
-              &, &.day-isHoliday {
-                color: #aaa;
-                background-color: #f1f1f1;
-              }
-            }
-
-            &.day-isToday {
-              color: #333;
-              background-color: #f8e493;
-            }
-
-            &.day-isSelected {
-              font-size: 17px;
-              line-height: 1.1;
-              color: $white !important;
-              background-color: $primary;
-            }
-
-            &.day-deactivate {
-              color: $black !important;
-              background-color: $white !important;
-              @include opacity(0.2);
-            }
-
-            &:nth-child(6) {
-              @include border-radius($border-radius 0 0 0)
-            }
-
-            &:nth-child(42) {
-              color: $danger;
-              @include border-radius(0 0 0 $border-radius)
-            }
-          }
-        }
-
-        &.show-weekdays {
-          width: 23%;
-
-          li {
-            width: 100%;
-            border-#{$left}: none;
-
-            &:nth-child(1) {
-              @include border-radius(0 $border-radius 0 0)
-            }
-
-            &:nth-child(7) {
-              color: $danger;
-              @include border-radius(0 0 $border-radius 0)
-            }
-          }
-        }
-
-        &.show-months {
-          width: 100%;
-
-          li {
-            width: calc(33.33333% + 1px);
-            cursor: pointer;
-
-            &:nth-child(1) {
-              @include border-radius(0 $border-radius 0 0)
-            }
-
-            &:nth-child(3) {
-              @include border-radius($border-radius 0 0 0)
-            }
-
-            &:nth-child(10) {
-              @include border-radius(0 0 $border-radius 0)
-            }
-
-            &:nth-child(12) {
-              @include border-radius(0 0 0 $border-radius)
-            }
-
-            &.month-isSelected {
-              color: $white;
-              background-color: $primary;
-            }
-          }
-        }
-
-        &.show-year {
-          li {
-            width: calc(33.33333% + 1px);
-            cursor: pointer;
-
-            &:nth-child(1) {
-              @include border-radius(0 $border-radius 0 0)
-            }
-
-            &:nth-child(3) {
-              @include border-radius($border-radius 0 0 0)
-            }
-
-            &:nth-child(13) {
-              @include border-radius(0 0 $border-radius 0)
-            }
-
-            &:nth-child(15) {
-              @include border-radius(0 0 0 $border-radius)
-            }
-
-            &.year-deactivate {
-              color: $black !important;
-              background-color: $white !important;
-              @include opacity(0.2);
-            }
-
-            &.year-isSelected {
-              color: $white;
-              background-color: $primary;
-            }
-          }
-        }
-      }
-    }
-
-    .rtl {
-      .radius-right {
-        @include border-radius(0 $border-radius $border-radius 0 !important);
-      }
-
-      .radius-left {
-        @include border-radius($border-radius 0 0 $border-radius !important);
-      }
-    }
-
-    .btn {
-      height: 33px;
-      padding: 0;
-    }
-  }
-</style>

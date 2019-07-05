@@ -1,40 +1,7 @@
-@mixin animation($animation) {
-  -webkit-animation: $animation;
-  -o-animation: $animation;
-  animation: $animation;
-}
-
-@mixin blur($arg...) {
-  filter: blur($arg);
-  -webkit-filter: blur($arg);
-}
-
 @mixin border-radius($radius...) {
   -webkit-border-radius: $radius;
   -moz-border-radius: $radius;
   border-radius: $radius;
-}
-
-@mixin background-gradient($arg...) {
-  -webkit-background-image: -webkit-linear-gradient($arg);
-  -moz--background-image: -moz-linear-gradient($arg);
-  -o--background-image: -o-linear-gradient($arg);
-  background: linear-gradient($arg);
-}
-
-@mixin placeholder-color($color...) {
-  &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: $color;
-    opacity: 1; /* Firefox */
-  }
-
-  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: $color;
-  }
-
-  &::-ms-input-placeholder { /* Microsoft Edge */
-    color: $color;
-  }
 }
 
 @mixin opacity($opacity) {
@@ -43,22 +10,6 @@
   $opacity-ie: ($opacity * 100);
   -ms-filter: alpha(opacity=$opacity-ie);
   filter: alpha(opacity=$opacity-ie);
-}
-
-@mixin rotate($degrees) {
-  -webkit-transform: rotate($degrees);
-  -moz-transform: rotate($degrees);
-  -ms-transform: rotate($degrees); // IE9 only
-  -o-transform: rotate($degrees);
-  transform: rotate($degrees);
-}
-
-@mixin transform($transform...) {
-  -webkit-transform: $transform;
-  -moz-transform: $transform;
-  -ms-transform: $transform;
-  -o-transform: $transform;
-  transform: $transform;
 }
 
 @mixin transition($transition...) {

@@ -1,39 +1,22 @@
 # Persian Calendar
+vue js calendar based on vue-bootstrap
 
 ## Project setup
 ```
 yarn install
-```
-
-### Compiles and hot-reloads for development
-```
 yarn run serve
 ```
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+### Requirements
+- jquery
+- bootstrap
+- bootstrap-vue
 
-### Run your tests
+### Basic configs
 ```
-yarn run test
-```
+import Vue from 'vue';
 
-### Lints and fixes files
+import CalendarComponent from '../index';
+import 'persian-calendar/src/styles/index.scss';
+Vue.use(CalendarComponent);
 ```
-yarn run lint
-```
-
-### Run your end-to-end tests
-```
-yarn run test:e2e
-```
-
-### Run your unit tests
-```
-yarn run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
