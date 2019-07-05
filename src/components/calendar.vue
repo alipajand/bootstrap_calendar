@@ -459,7 +459,7 @@
       clickOutside(event) {
         const reference = this.$refs[String(this.inputCalendarSelector)];
         const condition = reference && reference.contains(event.target);
-        return !Boolean(condition);
+        return !condition;
       },
 
       /**
