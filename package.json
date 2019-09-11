@@ -1,7 +1,7 @@
 {
   "name": "persian-calendar",
   "version": "1.1.11",
-  "license": "pajand",
+  "license": "alipajand",
   "description": "persian calendar project",
   "author": "alipajand <ali.pajand@gmail.com>",
   "scripts": {
