@@ -1,6 +1,7 @@
 {
   "name": "persian-calendar",
-  "version": "1.1.10",
+  "version": "1.1.11",
+  "license": "pajand",
   "description": "persian calendar project",
   "author": "alipajand <ali.pajand@gmail.com>",
   "scripts": {
@@ -9,7 +10,6 @@
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "jquery": "^3.4.1",
     "vue": "^2.6.10"
   },
   "devDependencies": {

@@ -6,23 +6,7 @@
 
 @mixin opacity($opacity) {
   opacity: $opacity;
-  // IE8 filter
   $opacity-ie: ($opacity * 100);
   -ms-filter: alpha(opacity=$opacity-ie);
   filter: alpha(opacity=$opacity-ie);
-}
-
-@mixin transition($transition...) {
-  -webkit-transition: $transition;
-  -moz-transition: $transition;
-  -ms-transition: $transition;
-  -o-transition: $transition;
-  transition: $transition;
-}
-
-@mixin user-select($select) {
-  -webkit-user-select: $select;
-  -moz-user-select: $select;
-  -ms-user-select: $select; // IE10+
-  user-select: $select;
 }

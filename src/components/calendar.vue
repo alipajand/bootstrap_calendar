@@ -113,7 +113,6 @@
               </ul>
               <ul class="list-unstyled show-days float-right p-0">
                 <li v-for="(day, index) in dayArray"
-                    v-b-tooltip
                     v-bind:key="index"
                     v-bind:title="day.isToday && inputHighlightToday ? 'امروز' : ''"
                     v-bind:class="[
